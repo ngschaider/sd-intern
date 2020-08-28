@@ -1,18 +1,14 @@
 version: '2'
 services:
   php:
-    image: yiisoftware/yii2-php:7.1-apache
-    networks:
-      - main
+    image: yiisoftware/yii2-php:7.4-apache
     volumes:
       - ~/.composer-docker/cache:/root/.composer/cache:delegated
       - ./:/app:delegated
     ports:
       - "8000:80"
   mysql:
-    image: mysql
-    networks:
-      - main
+    image: mariadb:10.5.5-focal
     environment:
       MYSQL_DATABASE: "sd_intern"
       MYSQL_USER: "sd_intern"
@@ -25,8 +21,6 @@ services:
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    networks:
-      - main
     ports:
       - "8080:80"
     environment:
@@ -36,6 +30,3 @@ services:
 
 volumes:
   db:
-  
-networks:
-  main:
