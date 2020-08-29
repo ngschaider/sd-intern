@@ -48,7 +48,7 @@ AppAsset::register($this);
                 . Html::beginForm(['/site/logout'], 'post')
                 . Html::submitButton(
                     'Logout (' . Yii::$app->user->identity->username . ')',
-                    ['class' => 'btn btn-link logout']
+                    ['class' => 'nav-link btn btn-link logout']
                 )
                 . Html::endForm()
                 . '</li>'
@@ -70,8 +70,6 @@ AppAsset::register($this);
 <footer class="footer">
     <div class="container">
         <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
-
-        <p class="pull-right"><?= Yii::powered() ?></p>
     </div>
 </footer>
 
