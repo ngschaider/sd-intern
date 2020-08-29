@@ -100,3 +100,26 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
+
+/* Vertically Centered, Full Width Banner */
+.masthead {
+    height: 40vh;
+    min-height: 400px;
+    background-image: url('https://source.unsplash.com/BtbjCFUvBXs/1920x1080');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-bottom: 4px solid #73bae2;
+}
+
+.bg-sd-primary {
+    background-color: #e54563;
+}
+
+.bg-sd-secondary {
+    background-color: #73bae2;
+}
+
+.bg-sd-mixed {
+    background-color: #7ca2c5;
+}

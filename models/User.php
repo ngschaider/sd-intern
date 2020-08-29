@@ -16,22 +16,27 @@ use yii\web\IdentityInterface;
  *
  * @property-read integer $id
  * @property string $username
- * @property string $password
+ * @property string $password_hash
  * @property-read string $authKey
  * @property-read void $auth_key
+ * @property boolean $allow_login
+ * @property boolean $enabled
  */
 class User extends ActiveRecord implements IdentityInterface {
 
+	public $password;
+
+	/**
+	 * @param bool $insert
+	 * @return bool
+	 * @throws Exception
+	 */
 	public function beforeSave($insert) {
-		if(!parent::beforeSave($insert)) {
-			return false;
+		if($this->password != "") {
+			$this->password_hash = Yii::$app->security->generatePasswordHash($this->password);
 		}
 
-		if($this->isNewRecord) {
-			$this->auth_key = Yii::$app->security->generateRandomString();
-		}
-
-		return true;
+		return parent::beforeSave($insert);
 	}
 
 	public static function tableName() {
@@ -40,6 +45,27 @@ class User extends ActiveRecord implements IdentityInterface {
 
 	public static function findIdentity($id) {
 		return static::findOne($id);
+	}
+
+	public function __construct($config = []) {
+		$this->scenario = "insert";
+
+		parent::__construct($config);
+	}
+
+	public function afterFind() {
+		$this->scenario = "update";
+
+		return parent::beforeValidate();
+	}
+
+	public function rules() {
+		return [
+			[["username"], "required"],
+			[["password"], "required", "except" => "update"],
+			[["username", "password"], "string", "max" => 255],
+			[["allow_login", "enabled"], "boolean"],
+		];
 	}
 
 	/**
@@ -67,16 +93,6 @@ class User extends ActiveRecord implements IdentityInterface {
 	 */
 	public function validatePassword($password) {
 		return Yii::$app->security->validatePassword($password, $this->password);
-	}
-
-	/**
-	 * Generates password hash from password and sets it to the model
-	 *
-	 * @param string $password
-	 * @throws Exception
-	 */
-	public function setPassword($password) {
-		$this->password = Yii::$app->security->generatePasswordHash($password);
 	}
 
 	/**
