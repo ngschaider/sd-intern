@@ -16,11 +16,23 @@ use yii\web\IdentityInterface;
  *
  * @property-read integer $id
  * @property string $username
- * @property string $password_hash
- * @property-write string $password
- * @property-read void $authKey
+ * @property string $password
+ * @property-read string $authKey
+ * @property-read void $auth_key
  */
 class User extends ActiveRecord implements IdentityInterface {
+
+	public function beforeSave($insert) {
+		if(!parent::beforeSave($insert)) {
+			return false;
+		}
+
+		if($this->isNewRecord) {
+			$this->auth_key = Yii::$app->security->generateRandomString();
+		}
+
+		return true;
+	}
 
 	public static function tableName() {
 		return "users";
@@ -48,21 +60,13 @@ class User extends ActiveRecord implements IdentityInterface {
 	}
 
 	/**
-	 * @inheritdoc
-	 */
-	public function validateAuthKey($authKey) {
-		return $this->getAuthKey() === $authKey;
-	}
-
-	/**
 	 * Validates password
 	 *
 	 * @param string $password password to validate
 	 * @return boolean if password provided is valid for current user
-	 * @throws Exception
 	 */
 	public function validatePassword($password) {
-		return $this->password_hash === Yii::$app->security->generatePasswordHash($password);
+		return Yii::$app->security->validatePassword($password, $this->password);
 	}
 
 	/**
@@ -72,14 +76,33 @@ class User extends ActiveRecord implements IdentityInterface {
 	 * @throws Exception
 	 */
 	public function setPassword($password) {
-		$this->password_hash = Yii::$app->security->generatePasswordHash($password);
+		$this->password = Yii::$app->security->generatePasswordHash($password);
 	}
 
+	/**
+	 * @param mixed $token
+	 * @param null $type
+	 * @return void|IdentityInterface|null
+	 * @throws NotImplementedException
+	 */
 	public static function findIdentityByAccessToken($token, $type = null) {
 		throw new NotImplementedException();
 	}
 
+	/**
+	 * @return string|void
+	 * @throws NotImplementedException
+	 */
 	public function getAuthKey() {
+		throw new NotImplementedException();
+	}
+
+	/**
+	 * @param string $authKey
+	 * @return bool|void
+	 * @throws NotImplementedException
+	 */
+	public function validateAuthKey($authKey) {
 		throw new NotImplementedException();
 	}
 
