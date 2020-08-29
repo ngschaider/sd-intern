@@ -103,13 +103,18 @@ a.desc:after {
 
 /* Vertically Centered, Full Width Banner */
 .masthead {
+    background-size: cover;
     height: 40vh;
     min-height: 400px;
-    background-image: url('https://source.unsplash.com/BtbjCFUvBXs/1920x1080');
-    background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    border-bottom: 4px solid #73bae2;
+    background-image: linear-gradient(67deg, #e54563 calc(50% + 10px), #73bae2 calc(50% + 10px));
+}
+
+.masthead .lead {
+    color: white;
+    font-weight: 800;
+    font-variant: small-caps;
 }
 
 .bg-sd-primary {
@@ -122,4 +127,18 @@ a.desc:after {
 
 .bg-sd-mixed {
     background-color: #7ca2c5;
+}
+
+/** Bootstrap Overwrites **/
+.dropdown-item:hover,
+.dropdown-item:focus {
+    background-color: #e54563;
+    color: white;
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+    color: #fff;
+    text-decoration: none;
+    background-color: #e54563;
 }

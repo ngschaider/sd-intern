@@ -4,31 +4,28 @@ namespace app\controllers;
 
 use app\components\Controller;
 use app\components\ModelNotFoundException;
-use app\models\User;
+use app\models\Location;
 use Yii;
 use yii\data\ActiveDataProvider;
-use yii\web\NotFoundHttpException;
 
-class UserController extends Controller {
+/**
+ * @oackage app.controllers
+ * @author Niklas Gschaider <niklas.gschaider@gschaider-systems.at>
+ */
+class LocationController extends Controller {
 
-	/**
-	 * @return string
-	 */
 	public function actionIndex() {
 		$dataProvider = new ActiveDataProvider([
-			"query" => User::find(),
+			"query" => Location::find()
 		]);
 
 		return $this->render("index", [
-			"dataProvider" => $dataProvider,
+			"dataProvider" => $dataProvider
 		]);
 	}
 
-	/**
-	 * @return string|\yii\web\Response
-	 */
 	public function actionCreate() {
-		$model = new User();
+		$model = new Location();
 
 		if($model->load(Yii::$app->request->post())) {
 			if($model->save()) {
@@ -47,7 +44,7 @@ class UserController extends Controller {
 	 * @throws ModelNotFoundException
 	 */
 	public function actionUpdate($id) {
-		$model = User::findOne(["id" => $id]);
+		$model = Location::findOne(["id" => $id]);
 		if(!$model) {
 			throw new ModelNotFoundException();
 		}
@@ -59,22 +56,22 @@ class UserController extends Controller {
 		}
 
 		return $this->render("form", [
-			"model" => $model,
+			"model" => $model
 		]);
 	}
 
 	/**
 	 * @param $id
 	 * @return \yii\web\Response
+	 * @throws ModelNotFoundException
 	 * @throws \Throwable
 	 * @throws \yii\db\StaleObjectException
 	 */
 	public function actionDelete($id) {
-		$model = User::findOne(["id" => $id]);
+		$model = Location::findOne(["id" => $id]);
 		if(!$model) {
 			throw new ModelNotFoundException();
 		}
-
 
 		$model->delete();
 

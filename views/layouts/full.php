@@ -8,6 +8,7 @@ use yii\helpers\Html;
 use yii\bootstrap4\Nav;
 use yii\bootstrap4\NavBar;
 use app\assets\AppAsset;
+use yii\helpers\Url;
 
 AppAsset::register($this);
 ?>
@@ -35,20 +36,22 @@ AppAsset::register($this);
 		],
 	]);
 	echo Nav::widget([
-		'options' => ['class' => 'navbar-nav ml-auto'],
-		'items' => [
-			['label' => 'Home', 'url' => ['/site/index']],
+		"options" => ["class" => "navbar-nav ml-auto"],
+		"items" => [
+			["label" => "Home", 'url' => ['/site/index']],
+			["label" => "Trainings", "url" => ["/training/index"]],
+			["label" => "Locations", "url" => ["/location/index"]],
 			["label" => "Admin", "items" => [
-				['label' => 'Benutzer', 'url' => ['/user/index']],
+				["label" => "Benutzer", 'url' => ["/user/index"]],
 			]],
 			Yii::$app->user->isGuest ? (
-			['label' => 'Login', 'url' => ['/site/login']]
+			["label" => "Login", "url" => ["/site/login"]]
 			) : (
 				'<li>'
 				. Html::beginForm(['/site/logout'], 'post')
 				. Html::submitButton(
-					'Logout (' . Yii::$app->user->identity->username . ')',
-					['class' => 'nav-link btn btn-link logout']
+					"Logout (" . Yii::$app->user->identity->username . ")",
+					["class" => "nav-link btn btn-link logout"]
 				)
 				. Html::endForm()
 				. '</li>'
@@ -63,7 +66,7 @@ AppAsset::register($this);
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; Niklas Gschaider <?= date('Y') ?></p>
+        <p class="pull-left">&copy; Show & Dance Triestingtal <?= date('Y') ?></p>
     </div>
 </footer>
 

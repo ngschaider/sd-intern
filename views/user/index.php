@@ -7,6 +7,7 @@
  * @var ActiveDataProvider $dataProvider
  */
 
+use app\models\User;
 use yii\data\ActiveDataProvider;
 use yii\grid\GridView;
 use yii\helpers\Html;
@@ -23,10 +24,19 @@ echo GridView::widget([
 			"class" => "yii\grid\SerialColumn",
 		],
 		"username",
+		"firstname",
+		"lastname",
 		"enabled:boolean",
 		"allow_login:boolean",
 		[
 			"class" => "app\components\ActionColumn",
+			"visibleButtons" => [
+				"delete" => function($model, $key, $index) {
+					/** @var User $model */
+					return !$model->isSuperadmin;
+				},
+				"view" => false,
+			]
 		]
 	]
 ]);

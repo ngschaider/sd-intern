@@ -14,8 +14,12 @@ $this->title = 'My Yii Application';
             <div class="row h-100 align-items-center">
                 <div class="col-12 text-center">
                     <!--<h1 class="font-weight-light">Show & Dance Triestingtal</h1>-->
-                    <?= Html::img("@web/images/logo-512.png", ["class" => "img", "style" => "height: 300px"]); ?>
-                    <p class="lead">Internal Management Platform</p>
+					<?= Html::img("@web/images/logo-512.png", ["class" => "img", "style" => "height: 300px"]); ?>
+                    <p class="lead">
+                        <span style="padding: 5px 10px; border-radius: 5px; text-shadow: 0 0 15px rgba(0, 0, 0, 0.75)">
+                            Internal Management Platform
+                        </span>
+                    </p>
                 </div>
             </div>
         </div>

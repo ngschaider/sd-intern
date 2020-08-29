@@ -1,13 +1,13 @@
 <?php
 /**
- * @package app.views.user
+ * @package app.views.location
  * @author Niklas Gschaider <niklas.gschaider@gschaider-systems.at>
  *
  * @var View $this
- * @var User $model
+ * @var Location $model
  */
 
-use app\models\User;
+use app\models\Location;
 use yii\helpers\Html;
 use yii\web\View;
 use yii\bootstrap4\ActiveForm;
@@ -18,12 +18,9 @@ use yii\bootstrap4\ActiveForm;
 
 <?= $form->errorSummary($model); ?>
 
-<?= $form->field($model, "username") ?>
-<?= $form->field($model, "password") ?>
-<?= $form->field($model, "allow_login")->checkbox() ?>
-<?= $form->field($model, "enabled")->checkbox() ?>
+<?= $form->field($model, "name") ?>
 
-    <div class="form-group">
+	<div class="form-group">
 		<?= Html::submitButton("Submit", ["class" => "btn btn-primary"]) ?>
-    </div>
+	</div>
 <?php ActiveForm::end(); ?>

@@ -16,10 +16,13 @@ use yii\web\IdentityInterface;
  *
  * @property-read integer $id
  * @property string $username
+ * @property string $firstname
+ * @property string $lastname
  * @property string $password_hash
  * @property-read string $authKey
  * @property-read void $auth_key
  * @property boolean $allow_login
+ * @property-read bool $isSuperadmin
  * @property boolean $enabled
  */
 class User extends ActiveRecord implements IdentityInterface {
@@ -45,6 +48,10 @@ class User extends ActiveRecord implements IdentityInterface {
 
 	public static function findIdentity($id) {
 		return static::findOne($id);
+	}
+
+	public function getIsSuperadmin() {
+		return $this->id == 1;
 	}
 
 	public function __construct($config = []) {
