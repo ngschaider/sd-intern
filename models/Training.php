@@ -6,7 +6,7 @@
 namespace app\models;
 
 use app\components\ActiveRecord;
-use TrainingUser;
+use yii\db\ActiveQuery;
 
 /**
  * Class Training
@@ -18,7 +18,9 @@ use TrainingUser;
  * @property integer $end
  * @property string $name
  * @property-read mixed $location
+ * @property-read ActiveQuery $users
  * @property boolean $is_optional
+ * @property-read $userTrainings
  */
 class Training extends ActiveRecord {
 
@@ -45,8 +47,11 @@ class Training extends ActiveRecord {
 		];
 	}
 
+	/**
+	 * @return ActiveQuery
+	 */
 	public function getUserTrainings() {
-		return $this->hasMany(UserTraining::class, ["id" => "user_id"]);
+		return $this->hasMany(UserTraining::class, ["training_id" => "id"]);
 	}
 
 }

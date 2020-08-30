@@ -5,12 +5,18 @@
 
 namespace app\models;
 
-use app\components\ActiveRecord;
+use yii\db\ActiveRecord;
 
 /**
+ * Class UserTraining
  *
- * @property-read mixed $trainings
+ * @property-read integer $id
+ * @property boolean $attended
+ * @property boolean $is_trainer
+ * @property integer $training_id
+ * @property integer $user_id
  * @property-read mixed $users
+ * @property-read mixed $training
  */
 class UserTraining extends ActiveRecord {
 
@@ -19,11 +25,11 @@ class UserTraining extends ActiveRecord {
 	}
 
 	public function getUsers() {
-		return $this->hasMany(User::class, ["user_id" => "id"]);
+		return $this->hasOne(User::class, ["user_id" => "id"]);
 	}
 
-	public function getTrainings() {
-		return $this->hasMany(Training::class, ["training_id" => "id"]);
+	public function getTraining() {
+		return $this->hasOne(Training::class, ["training_id" => "id"]);
 	}
 
 }

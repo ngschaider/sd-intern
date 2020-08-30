@@ -18,6 +18,9 @@ class m200829_191012_create_trainings_table extends Migration {
 			"created_by" => $this->integer()->notNull(),
 			"updated_at" => $this->timestamp()->notNull(),
 			"created_at" => $this->timestamp()->notNull(),
+			"is_optional" => $this->boolean()->notNull(),
+			"start" => $this->dateTime()->notNull(),
+			"end" => $this->dateTime()->notNull(),
 		]);
 	}
 
@@ -25,7 +28,7 @@ class m200829_191012_create_trainings_table extends Migration {
 	 * {@inheritdoc}
 	 */
 	public function safeDown() {
-		$this->dropTable("events");
+		$this->dropTable("trainings");
 	}
 
 }

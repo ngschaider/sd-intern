@@ -6,7 +6,6 @@
  * @var Training $model
  */
 
-
 use app\models\Training;
 use app\models\Usergroup;
 use yii\helpers\ArrayHelper;
@@ -17,7 +16,6 @@ echo Html::beginForm(["copyUsergroup"]);
 echo Html::hiddenInput("training_id", $model->id);
 echo Html::dropDownList("usergroup_id", ArrayHelper::map(Usergroup::find()->all(), "id", "name"));
 echo Html::endForm();
-
 
 foreach($model->userTrainings as $user) {
 	echo $this->renderFile("_user", [
