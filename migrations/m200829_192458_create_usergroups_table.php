@@ -14,10 +14,10 @@ class m200829_192458_create_usergroups_table extends Migration
     {
 	    $this->createTable("usergroups", [
 		    "id" => $this->primaryKey(),
-		    "name" => $this->string(),
+		    "name" => $this->string()->notNull(),
 		    "created_by" => $this->integer()->notNull(),
-		    "created_at" => $this->timestamp()->notNull(),
-		    "updated_at" => $this->timestamp()->notNull(),
+		    "created_at" => $this->dateTime()->notNull(),
+		    "updated_at" => $this->dateTime()->notNull(),
 	    ]);
     }
 
@@ -26,6 +26,6 @@ class m200829_192458_create_usergroups_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('{{%usergroups}}');
+        $this->dropTable('usergroups');
     }
 }

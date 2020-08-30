@@ -77,4 +77,20 @@ class TrainingController extends Controller {
 		return $this->redirect("index");
 	}
 
+	/**
+	 * @param $id
+	 * @return string
+	 * @throws ModelNotFoundException
+	 */
+	public function actionUsers($id) {
+		$model = Training::findOne(["id" => $id]);
+		if(!$model) {
+			throw new ModelNotFoundException();
+		}
+
+		return $this->render("users", [
+			"model" => $model,
+		]);
+	}
+
 }

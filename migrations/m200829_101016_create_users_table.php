@@ -22,8 +22,8 @@ class m200829_101016_create_users_table extends Migration {
 			"allow_login" => $this->boolean()->notNull()->defaultValue(0),
 			"enabled" => $this->boolean()->notNull()->defaultValue(1),
 			"created_by" => $this->integer()->notNull(),
-			"created_at" => $this->integer()->notNull(),
-			"updated_at" => $this->integer()->notNull(),
+			"created_at" => $this->datetime()->notNull(),
+			"updated_at" => $this->datetime()->notNull(),
 		]);
 
 		$this->insert("users", [
@@ -33,8 +33,8 @@ class m200829_101016_create_users_table extends Migration {
 			"allow_login" => 1,
 			"enabled" => 1,
 			"created_by" => 1,
-			"created_at" => time(),
-			"updated_at" => time(),
+			"created_at" => (new DateTime())->format("Y-m-d H:i:s"),
+			"updated_at" => (new DateTime())->format("Y-m-d H:i:s"),
 		]);
 	}
 

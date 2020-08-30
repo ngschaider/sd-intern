@@ -15,6 +15,16 @@ use yii\web\View;
 
 echo GridView::widget([
 	"dataProvider" => $dataProvider,
+	"columns" => [
+		"id",
+		"name",
+		[
+			"class" => "app\components\ActionColumn",
+			"visibleButtons" => [
+				"view" => false,
+			],
+		],
+	]
 ]);
 
 
