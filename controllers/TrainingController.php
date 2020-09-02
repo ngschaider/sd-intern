@@ -208,4 +208,20 @@ class TrainingController extends Controller {
 		]);
 	}
 
+	/**
+	 * @param $id
+	 * @throws ModelNotFoundException
+	 */
+	public function actionView($id) {
+		$model = Training::findOne(["id" => $id]);
+
+		if(!$model) {
+			throw new ModelNotFoundException();
+		}
+
+		return $this->render("view", [
+			"model" => $model,
+		]);
+	}
+
 }

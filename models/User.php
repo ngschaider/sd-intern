@@ -64,6 +64,7 @@ class User extends ActiveRecord implements IdentityInterface {
 	public function rules() {
 		return [
 			[["username", "allowLogin"], "required"],
+			[["username"], "unique"],
 			[["username", "firstname", "lastname", "password"], "string", "max" => 255],
 			[["allowLogin"], "boolean"],
 		];

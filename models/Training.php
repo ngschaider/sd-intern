@@ -16,10 +16,14 @@ use yii\db\ActiveQuery;
  * @property integer $id
  * @property integer $start
  * @property integer $end
- * @property-read mixed $location
+ * @property-read Location $location
  * @property integer $locationId
  * @property-read User[] $users
  * @property boolean $isOptional
+ * @property-read int $attendedCount
+ * @property-read float $attendedPercentage
+ * @property-read void $notAttendedPercentage
+ * @property-read int $notAttendedCount
  * @property-read UserTraining[] $userTrainings
  */
 class Training extends ActiveRecord {
@@ -67,12 +71,26 @@ class Training extends ActiveRecord {
 		return $userTraining->save();
 	}
 
+	/**
+	 * @return int
+	 */
 	public function getAttendedCount() {
 		return $this->getUserTrainings()->andWhere(["attended" => true])->count();
 	}
 
+	/**
+	 * @return int
+	 */
 	public function getNotAttendedCount() {
 		return $this->getUserTrainings()->andWhere(["attended" => false])->count();
+	}
+
+	public function getAttendedPercentage() {
+		return $this->attendedCount / ($this->notAttendedCount + $this->attendedCount);
+	}
+
+	public function getNotAttendedPercentage() {
+		return $this->notAttendedCount / ($this->notAttendedCount + $this->attendedCount);
 	}
 
 }
