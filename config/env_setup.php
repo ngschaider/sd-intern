@@ -8,12 +8,12 @@
  * @return mixed|null
  */
 function env($name) {
-	if(file_exists("../env.php")) {
-		$values = require("../env.php");
-		if(isset($values[$name])) {
-			return $values[$name];
-		}
-	}
+        if(file_exists(__DIR__ . "/../env.php")) {
+                $values = require  __DIR__ . "/../env.php";
+                if(isset($values[$name])) {
+                        return $values[$name];
+                }
+        }
 
-	return null;
+        return null;
 }
