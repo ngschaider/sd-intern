@@ -20,7 +20,8 @@ echo Html::beginForm(["copy-user"], "get", [
 	"class" => "form-inline"
 ]);
 echo "Benutzer hinzufügen: ";
-echo Html::dropDownList("user_id", null, ArrayHelper::map(User::find()->all(), "id", "username"), [
+echo Html::hiddenInput("trainingId", $model->id);
+echo Html::dropDownList("userId", null, ArrayHelper::map(User::find()->all(), "id", "username"), [
 	"style" => "margin-left: 20px;",
 	"class" => "form-control",
 ]);

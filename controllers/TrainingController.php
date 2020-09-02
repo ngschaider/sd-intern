@@ -8,6 +8,7 @@ namespace app\controllers;
 use app\components\Controller;
 use app\components\ModelNotFoundException;
 use app\models\Training;
+use app\models\User;
 use app\models\Usergroup;
 use app\models\UserTraining;
 use Throwable;
@@ -115,6 +116,25 @@ class TrainingController extends Controller {
 		foreach($usergroup->users as $user) {
 			$training->addUser($user);
 		}
+
+		return $this->redirect(["users", "id" => $trainingId]);
+	}
+
+	/**
+	 * @param $trainingId
+	 * @param $userId
+	 * @return Response
+	 * @throws ModelNotFoundException
+	 */
+	public function actionCopyUser($trainingId, $userId) {
+		$training = Training::findOne(["id" => $trainingId]);
+		$user = User::findOne(["id" => $userId]);
+
+		if(!$training || !$user) {
+			throw new ModelNotFoundException();
+		}
+
+		$training->addUser($user);
 
 		return $this->redirect(["users", "id" => $trainingId]);
 	}
