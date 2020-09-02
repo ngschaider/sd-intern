@@ -1,5 +1,7 @@
 <?php
 
+require_once(__DIR__ . "/env_setup.php");
+
 return [
 	'class' => 'yii\db\Connection',
 	'dsn' => 'mysql:host=' . env("DB_HOST") . ';dbname=' . env("DB_NAME"),
