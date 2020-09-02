@@ -8,7 +8,4 @@ return [
 	"DB_USER" => "root",
 	"DB_PASSWORD" => "root",
 	"DB_NAME" => "sd_intern",
-
-	"APP_DEBUG" => true,
-	"APP_ENV" => "dev"
 ];

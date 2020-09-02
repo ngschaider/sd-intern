@@ -34,3 +34,6 @@ tests/_support/_generated
 
 #environment specific config
 /env.php
+
+# file to enable DEBUG mode
+/DEBUG
