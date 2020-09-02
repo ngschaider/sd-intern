@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpIllegalPsrClassPathInspection */
 
 use yii\db\Migration;
 
@@ -13,17 +13,17 @@ class m200829_192911_create_permissions_table extends Migration {
 	public function safeUp() {
 		$this->createTable("permissions", [
 			"id" => $this->primaryKey(),
-			"unique_name" => $this->string(),
-			"name" => $this->string(),
+			"name" => $this->string()->notNull(),
+			"description" => $this->string()->null(),
 		]);
 
 		$this->insert("permissions", [
-			"unique_name" => "crud_users",
-			"name" => "Einsehen, Erstellen, Bearbeiten und Löschen von Benutzern",
+			"name" => "crud_users",
+			"description" => "Einsehen, Erstellen, Bearbeiten und Löschen von Benutzern",
 		]);
 		$this->insert("permissions", [
-			"unique_name" => "crud_users",
-			"name" => "Einsehen, Erstellen, Bearbeiten und Löschen von Trainings",
+			"name" => "crud_trainings",
+			"description" => "Einsehen, Erstellen, Bearbeiten und Löschen von Trainings",
 		]);
 	}
 

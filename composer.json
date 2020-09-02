@@ -20,7 +20,8 @@
         "yiisoft/yii2-bootstrap4": "^2.0",
         "rmrevin/yii2-fontawesome": "^3.6",
         "kartik-v/yii2-datecontrol": "^1.9",
-        "kartik-v/yii2-widgets": "^3.4"
+        "kartik-v/yii2-widgets": "^3.4",
+        "arogachev/yii2-many-to-many": "^0.3.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

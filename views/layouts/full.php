@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $this \yii\web\View
+ * @var $this View
  * @var $content string
  */
 
@@ -8,7 +8,7 @@ use yii\helpers\Html;
 use yii\bootstrap4\Nav;
 use yii\bootstrap4\NavBar;
 use app\assets\AppAsset;
-use yii\helpers\Url;
+use yii\web\View;
 
 AppAsset::register($this);
 ?>
@@ -43,6 +43,7 @@ AppAsset::register($this);
 			["label" => "Locations", "url" => ["/location/index"]],
 			["label" => "Admin", "items" => [
 				["label" => "Benutzer", 'url' => ["/user/index"]],
+				["label" => "Benutzergruppen", 'url' => ["/usergroup/index"]],
 			]],
 			Yii::$app->user->isGuest ? (
 			["label" => "Login", "url" => ["/site/login"]]

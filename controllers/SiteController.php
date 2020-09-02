@@ -8,7 +8,6 @@ use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
-use app\models\ContactForm;
 
 class SiteController extends Controller {
 
@@ -44,10 +43,6 @@ class SiteController extends Controller {
 		return [
 			'error' => [
 				'class' => 'yii\web\ErrorAction',
-			],
-			'captcha' => [
-				'class' => 'yii\captcha\CaptchaAction',
-				'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
 			],
 		];
 	}
@@ -94,15 +89,6 @@ class SiteController extends Controller {
 		Yii::$app->user->logout();
 
 		return $this->goHome();
-	}
-
-	/**
-	 * Displays about page.
-	 *
-	 * @return string
-	 */
-	public function actionAbout() {
-		return $this->render('about');
 	}
 
 }

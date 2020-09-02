@@ -2,9 +2,8 @@
 
 namespace app\components;
 
-use Throwable;
-use yii\base\Exception;
+use yii\base\UserException;
 
-class NotImplementedException extends Exception {
+class NotImplementedException extends UserException {
 
 }

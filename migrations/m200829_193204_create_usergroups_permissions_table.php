@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpIllegalPsrClassPathInspection */
 
 use yii\db\Migration;
 
@@ -11,10 +11,10 @@ class m200829_193204_create_usergroups_permissions_table extends Migration {
 	 * {@inheritdoc}
 	 */
 	public function safeUp() {
-		$this->createTable("usergroups_permissions", [
+		$this->createTable("usergroupPermissions", [
 			"id" => $this->primaryKey(),
-			"usergroup_id" => $this->integer()->notNull(),
-			"permission_id" => $this->integer()->notNull(),
+			"usergroupId" => $this->integer()->notNull(),
+			"permissionId" => $this->integer()->notNull(),
 		]);
 	}
 
@@ -22,7 +22,7 @@ class m200829_193204_create_usergroups_permissions_table extends Migration {
 	 * {@inheritdoc}
 	 */
 	public function safeDown() {
-		$this->dropTable("usergroups_permissions");
+		$this->dropTable("usergroupPermissions");
 	}
 
 }

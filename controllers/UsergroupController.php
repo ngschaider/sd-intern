@@ -1,25 +1,28 @@
 <?php
+/**
+ * @author Niklas Gschaider <niklas.gschaider@gschaider-systems.at>
+ */
+
 
 namespace app\controllers;
 
 use app\components\Controller;
 use app\components\ModelNotFoundException;
-use app\models\Location;
+use app\models\Usergroup;
 use Throwable;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\db\StaleObjectException;
 use yii\web\Response;
 
-/**
- * @oackage app.controllers
- * @author Niklas Gschaider <niklas.gschaider@gschaider-systems.at>
- */
-class LocationController extends Controller {
+class UsergroupController extends Controller {
 
+	/**
+	 * @return string
+	 */
 	public function actionIndex() {
 		$dataProvider = new ActiveDataProvider([
-			"query" => Location::find()
+			"query" => Usergroup::find()
 		]);
 
 		return $this->render("index", [
@@ -27,12 +30,15 @@ class LocationController extends Controller {
 		]);
 	}
 
+	/**
+	 * @return string|Response
+	 */
 	public function actionCreate() {
-		$model = new Location();
+		$model = new Usergroup();
 
 		if($model->load(Yii::$app->request->post())) {
 			if($model->save()) {
-				return $this->redirect("index");
+				return $this->redirect(["index"]);
 			}
 		}
 
@@ -47,19 +53,36 @@ class LocationController extends Controller {
 	 * @throws ModelNotFoundException
 	 */
 	public function actionUpdate($id) {
-		$model = Location::findOne(["id" => $id]);
+		$model = Usergroup::findOne(["id" => $id]);
+
 		if(!$model) {
 			throw new ModelNotFoundException();
 		}
 
 		if($model->load(Yii::$app->request->post())) {
 			if($model->save()) {
-				return $this->redirect("index");
+				return $this->redirect(["index"]);
 			}
 		}
 
 		return $this->render("form", [
-			"model" => $model
+			"model" => $model,
+		]);
+	}
+
+	/**
+	 * @param $id
+	 * @return string
+	 * @throws ModelNotFoundException
+	 */
+	public function actionView($id) {
+		$model = Usergroup::findOne(["id" => $id]);
+		if(!$model) {
+			throw new ModelNotFoundException();
+		}
+
+		return $this->render("view", [
+			"model" => $model,
 		]);
 	}
 
@@ -71,14 +94,15 @@ class LocationController extends Controller {
 	 * @throws StaleObjectException
 	 */
 	public function actionDelete($id) {
-		$model = Location::findOne(["id" => $id]);
+		$model = Usergroup::findOne(["id" => $id]);
+
 		if(!$model) {
 			throw new ModelNotFoundException();
 		}
 
 		$model->delete();
 
-		return $this->redirect("index");
+		return $this->redirect(["index"]);
 	}
 
 }

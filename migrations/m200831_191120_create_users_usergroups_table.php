@@ -3,18 +3,18 @@
 use yii\db\Migration;
 
 /**
- * Handles the creation of table `{{%users_permissions}}`.
+ * Handles the creation of table `{{%users_usergroups}}`.
  */
-class m200829_193153_create_users_permissions_table extends Migration {
+class m200831_191120_create_users_usergroups_table extends Migration {
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function safeUp() {
-		$this->createTable("userPermissions", [
+		$this->createTable("userUsergroups", [
 			"id" => $this->primaryKey(),
+			"usergroupId" => $this->integer()->notNull(),
 			"userId" => $this->integer()->notNull(),
-			"permissionId" => $this->integer()->notNull(),
 		]);
 	}
 
@@ -22,7 +22,7 @@ class m200829_193153_create_users_permissions_table extends Migration {
 	 * {@inheritdoc}
 	 */
 	public function safeDown() {
-		$this->dropTable("userPermissions");
+		$this->dropTable("userUsergroups");
 	}
 
 }

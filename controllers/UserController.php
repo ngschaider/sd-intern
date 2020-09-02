@@ -5,9 +5,12 @@ namespace app\controllers;
 use app\components\Controller;
 use app\components\ModelNotFoundException;
 use app\models\User;
+use Throwable;
 use Yii;
 use yii\data\ActiveDataProvider;
+use yii\db\StaleObjectException;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 class UserController extends Controller {
 
@@ -25,7 +28,7 @@ class UserController extends Controller {
 	}
 
 	/**
-	 * @return string|\yii\web\Response
+	 * @return string|Response
 	 */
 	public function actionCreate() {
 		$model = new User();
@@ -43,7 +46,7 @@ class UserController extends Controller {
 
 	/**
 	 * @param $id
-	 * @return string|\yii\web\Response
+	 * @return string|Response
 	 * @throws ModelNotFoundException
 	 */
 	public function actionUpdate($id) {
@@ -65,9 +68,9 @@ class UserController extends Controller {
 
 	/**
 	 * @param $id
-	 * @return \yii\web\Response
-	 * @throws \Throwable
-	 * @throws \yii\db\StaleObjectException
+	 * @return Response
+	 * @throws Throwable
+	 * @throws StaleObjectException
 	 */
 	public function actionDelete($id) {
 		$model = User::findOne(["id" => $id]);

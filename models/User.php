@@ -5,7 +5,7 @@ namespace app\models;
 use app\components\NotImplementedException;
 use Yii;
 use yii\base\Exception;
-use yii\db\ActiveRecord;
+use app\components\ActiveRecord;
 use yii\web\IdentityInterface;
 
 /**
@@ -18,11 +18,13 @@ use yii\web\IdentityInterface;
  * @property string $username
  * @property string $firstname
  * @property string $lastname
- * @property string $password_hash
- * @property-read string $authKey
- * @property-read void $auth_key
- * @property boolean $allow_login
+ * @property string $passwordHash
+ * @property boolean $allowLogin
  * @property-read bool $isSuperadmin
+ * @property-read User[] $createdUsers
+ * @property-read User $createdByUser
+ * @property-read UserTraining[] $userTrainings
+ * @property-read void|string $authKey
  * @property boolean $enabled
  */
 class User extends ActiveRecord implements IdentityInterface {
@@ -36,7 +38,7 @@ class User extends ActiveRecord implements IdentityInterface {
 	 */
 	public function beforeSave($insert) {
 		if($this->password != "") {
-			$this->password_hash = Yii::$app->security->generatePasswordHash($this->password);
+			$this->passwordHash = Yii::$app->security->generatePasswordHash($this->password);
 		}
 
 		return parent::beforeSave($insert);
@@ -54,23 +56,10 @@ class User extends ActiveRecord implements IdentityInterface {
 		return $this->id == 1;
 	}
 
-	public function __construct($config = []) {
-		$this->scenario = "insert";
-
-		parent::__construct($config);
-	}
-
-	public function afterFind() {
-		$this->scenario = "update";
-
-		return parent::beforeValidate();
-	}
-
 	public function rules() {
 		return [
 			[["username"], "required"],
-			[["password"], "required", "except" => "update"],
-			[["username", "password"], "string", "max" => 255],
+			[["username", "firstname", "lastname", "password"], "string", "max" => 255],
 			[["allow_login", "enabled"], "boolean"],
 		];
 	}
@@ -99,7 +88,7 @@ class User extends ActiveRecord implements IdentityInterface {
 	 * @return boolean if password provided is valid for current user
 	 */
 	public function validatePassword($password) {
-		return Yii::$app->security->validatePassword($password, $this->password_hash);
+		return Yii::$app->security->validatePassword($password, $this->passwordHash);
 	}
 
 	/**
@@ -127,6 +116,10 @@ class User extends ActiveRecord implements IdentityInterface {
 	 */
 	public function validateAuthKey($authKey) {
 		throw new NotImplementedException();
+	}
+
+	public function getUserTrainings() {
+		return $this->hasMany(UserTraining::class, ["userId" => "id"]);
 	}
 
 }

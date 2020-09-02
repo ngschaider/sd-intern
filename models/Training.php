@@ -16,11 +16,11 @@ use yii\db\ActiveQuery;
  * @property integer $id
  * @property integer $start
  * @property integer $end
- * @property string $name
  * @property-read mixed $location
- * @property-read ActiveQuery $users
- * @property boolean $is_optional
- * @property-read $userTrainings
+ * @property integer $locationId
+ * @property-read User[] $users
+ * @property boolean $isOptional
+ * @property-read UserTraining[] $userTrainings
  */
 class Training extends ActiveRecord {
 
@@ -30,28 +30,38 @@ class Training extends ActiveRecord {
 
 	public function rules() {
 		return [
-			[["start", "end", "is_optional", "name"], "required"],
-			[["name"], "string", "max" => 255],
+			[["start", "end", "isOptional"], "required"],
 			[["start", "end"], "date", "format" => "php:Y-m-d H:i:s"],
-			[["location_id"], "exist", "targetClass" => Location::class, "targetAttribute" => "id"],
+			[["locationId"], "exist", "targetClass" => Location::class, "targetAttribute" => "id"],
 		];
 	}
 
 	public function getLocation() {
-		return $this->hasOne(Location::class, ["id" => "location_id"]);
-	}
-
-	public function attributeLabels() {
-		return [
-			"location.name" => "Location",
-		];
+		return $this->hasOne(Location::class, ["id" => "locationId"]);
 	}
 
 	/**
 	 * @return ActiveQuery
 	 */
 	public function getUserTrainings() {
-		return $this->hasMany(UserTraining::class, ["training_id" => "id"]);
+		return $this->hasMany(UserTraining::class, ["trainingId" => "id"]);
+	}
+
+	/**
+	 * @param User $user
+	 * @return bool
+	 */
+	public function addUser($user) {
+		foreach($this->userTrainings as $userTraining) {
+			if($userTraining->userId == $user->id) {
+				return false;
+			}
+		}
+
+		$userTraining = new UserTraining();
+		$userTraining->trainingId = $this->id;
+		$userTraining->userId = $user->id;
+		return $userTraining->save();
 	}
 
 }

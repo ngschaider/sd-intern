@@ -6,36 +6,45 @@
 
 namespace app\models;
 
+use app\components\ActiveRecord;
+use arogachev\ManyToMany\behaviors\ManyToManyBehavior;
+use arogachev\ManyToMany\validators\ManyToManyValidator;
 use Yii;
+use yii\base\InvalidConfigException;
+use yii\db\ActiveQuery;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "usergroups".
  *
  * @property int $id
  * @property string $name
- * @property int $created_by
- * @property string $created_at
- * @property string $updated_at
+ * @property-read User[] $users
  */
-class Usergroup extends \yii\db\ActiveRecord
-{
-	/**
-	 * {@inheritdoc}
-	 */
-	public static function tableName()
-	{
-		return 'usergroups';
+class Usergroup extends ActiveRecord {
+
+	public $userIds;
+
+	public function behaviors() {
+		return ArrayHelper::merge(parent::behaviors(), [
+			"manytomany" => [
+				"class" => ManyToManyBehavior::class,
+				"relations" => [
+					[
+						"editableAttribute" => "userIds",
+						"name" => "users",
+					],
+				],
+			],
+		]);
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function rules()
-	{
+	public function rules() {
 		return [
-			[['created_by', 'created_at', 'updated_at'], 'required'],
-			[['created_by'], 'integer'],
-			[['created_at', 'updated_at'], 'safe'],
+			[["userIds"], ManyToManyValidator::class],
 			[['name'], 'string', 'max' => 255],
 		];
 	}
@@ -43,14 +52,19 @@ class Usergroup extends \yii\db\ActiveRecord
 	/**
 	 * {@inheritdoc}
 	 */
-	public function attributeLabels()
-	{
+	public function attributeLabels() {
 		return [
 			'id' => 'ID',
 			'name' => 'Name',
-			'created_by' => 'Created By',
-			'created_at' => 'Created At',
-			'updated_at' => 'Updated At',
 		];
 	}
+
+	/**
+	 * @return ActiveQuery
+	 * @throws InvalidConfigException
+	 */
+	public function getUsers() {
+		return $this->hasMany(User::class, ["id" => "userId"])->viaTable("userUsergroups", ["usergroupId" => "id"]);
+	}
+
 }

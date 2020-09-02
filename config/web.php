@@ -9,6 +9,7 @@ $db = require __DIR__ . '/db.php';
 $config = [
 	'id' => 'sd-intern',
 	"name" => "S&D - Management",
+	"timezone" => "Europe/Vienna",
 	"layout" => "default",
 	'basePath' => dirname(__DIR__),
 	'bootstrap' => ['log'],
@@ -30,7 +31,7 @@ $config = [
 				Module::FORMAT_DATETIME => 'php:Y-m-d H:i:s',
 			],
 
-			'displayTimezone' => 'Asia/Kolkata',
+			'displayTimezone' => 'Europe/Vienna',
 			'saveTimezone' => 'UTC',
 
 			// automatically use kartik\widgets for each of the above formats

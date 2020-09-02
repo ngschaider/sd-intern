@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpIllegalPsrClassPathInspection */
 
 use yii\db\Migration;
 
@@ -11,15 +11,12 @@ class m200829_192233_create_users_trainings_table extends Migration {
 	 * {@inheritdoc}
 	 */
 	public function safeUp() {
-		$this->createTable("users_trainings", [
+		$this->createTable("userTrainings", [
 			"id" => $this->primaryKey(),
-			"training_id" => $this->integer()->notNull(),
-			"user_id" => $this->integer()->notNull(),
+			"trainingId" => $this->integer()->notNull(),
+			"userId" => $this->integer()->notNull(),
 			"attended" => $this->boolean()->notNull()->defaultValue(1),
-			"is_trainer" => $this->boolean()->notNull()->defaultValue(0),
-			"created_by" => $this->integer()->notNull(),
-			"created_at" => $this->dateTime()->notNull(),
-			"updated_at" => $this->dateTime()->notNull(),
+			"isTrainer" => $this->boolean()->notNull()->defaultValue(0),
 		]);
 	}
 
@@ -27,7 +24,7 @@ class m200829_192233_create_users_trainings_table extends Migration {
 	 * {@inheritdoc}
 	 */
 	public function safeDown() {
-		$this->dropTable("users_trainings");
+		$this->dropTable("userTrainings");
 	}
 
 }

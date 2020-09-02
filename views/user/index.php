@@ -26,8 +26,7 @@ echo GridView::widget([
 		"username",
 		"firstname",
 		"lastname",
-		"enabled:boolean",
-		"allow_login:boolean",
+		"allowLogin:boolean",
 		[
 			"class" => "app\components\ActionColumn",
 			"visibleButtons" => [

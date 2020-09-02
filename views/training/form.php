@@ -10,7 +10,6 @@
 use app\models\Location;
 use app\models\Training;
 use kartik\datecontrol\DateControl;
-use kartik\widgets\DateTimePicker;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\web\View;
@@ -22,15 +21,14 @@ use yii\bootstrap4\ActiveForm;
 
 <?= $form->errorSummary($model); ?>
 
-<?= $form->field($model, "name") ?>
-<?= $form->field($model, "location_id")->dropDownList(ArrayHelper::map(Location::find()->all(), "id", "name")); ?>
+<?= $form->field($model, "locationId")->dropDownList(ArrayHelper::map(Location::find()->all(), "id", "name")); ?>
 <?= $form->field($model, "start")->widget(DateControl::class, [
 	"type" => DateControl::FORMAT_DATETIME,
 ]); ?>
 <?= $form->field($model, "end")->widget(DateControl::class, [
 	"type" => DateControl::FORMAT_DATETIME
 ]); ?>
-<?= $form->field($model, "is_optional")->checkbox(); ?>
+<?= $form->field($model, "isOptional")->checkbox(); ?>
 
     <div class="form-group">
 		<?= Html::submitButton("Submit", ["class" => "btn btn-primary"]) ?>

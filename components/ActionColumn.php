@@ -2,6 +2,7 @@
 
 namespace app\components;
 
+use Closure;
 use Yii;
 use yii\helpers\Html;
 
@@ -66,7 +67,7 @@ class ActionColumn extends \yii\grid\ActionColumn {
 			$name = $matches[1];
 
 			if(isset($this->visibleButtons[$name])) {
-				$isVisible = $this->visibleButtons[$name] instanceof \Closure
+				$isVisible = $this->visibleButtons[$name] instanceof Closure
 					? call_user_func($this->visibleButtons[$name], $model, $key, $index)
 					: $this->visibleButtons[$name];
 			} else {
