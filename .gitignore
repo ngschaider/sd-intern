@@ -33,4 +33,4 @@ tests/_support/_generated
 /.vagrant
 
 #environment specific config
-env.php
+/env.php
