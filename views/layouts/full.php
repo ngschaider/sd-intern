@@ -5,7 +5,7 @@
  */
 
 use yii\helpers\Html;
-use yii\bootstrap4\Nav;
+use app\components\Nav;
 use yii\bootstrap4\NavBar;
 use app\assets\AppAsset;
 use yii\web\View;
@@ -39,9 +39,9 @@ AppAsset::register($this);
 		"options" => ["class" => "navbar-nav ml-auto"],
 		"items" => [
 			["label" => "Home", 'url' => ['/site/index']],
-			["label" => "Trainings", "url" => ["/training/index"]],
-			["label" => "Locations", "url" => ["/location/index"]],
-			["label" => "Admin", "items" => [
+			["label" => "Trainings", "url" => ["/training/index"], "adminOnly" => true],
+			["label" => "Locations", "url" => ["/location/index"], "adminOnly" => true],
+			["label" => "Admin", "adminOnly" => true, "items" => [
 				["label" => "Benutzer", 'url' => ["/user/index"]],
 				["label" => "Benutzergruppen", 'url' => ["/usergroup/index"]],
 			]],

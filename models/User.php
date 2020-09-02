@@ -20,6 +20,7 @@ use yii\web\IdentityInterface;
  * @property string $lastname
  * @property string $passwordHash
  * @property boolean $allowLogin
+ * @property-read bool $isAdmin
  * @property-read bool $isSuperadmin
  * @property-read User[] $createdUsers
  * @property-read User $createdByUser
@@ -54,6 +55,10 @@ class User extends ActiveRecord implements IdentityInterface {
 
 	public function getIsSuperadmin() {
 		return $this->id == 1;
+	}
+
+	public function getIsAdmin() {
+		return $this->isSuperadmin;
 	}
 
 	public function rules() {
