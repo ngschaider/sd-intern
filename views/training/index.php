@@ -30,6 +30,8 @@ echo GridView::widget([
 				}
 			],
 		],
+		"attendedCount",
+		"notAttendedCount",
 	],
 ]);
 

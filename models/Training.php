@@ -36,6 +36,9 @@ class Training extends ActiveRecord {
 		];
 	}
 
+	/**
+	 * @return ActiveQuery
+	 */
 	public function getLocation() {
 		return $this->hasOne(Location::class, ["id" => "locationId"]);
 	}
@@ -62,6 +65,14 @@ class Training extends ActiveRecord {
 		$userTraining->trainingId = $this->id;
 		$userTraining->userId = $user->id;
 		return $userTraining->save();
+	}
+
+	public function getAttendedCount() {
+		return $this->getUserTrainings()->andWhere(["attended" => true])->count();
+	}
+
+	public function getNotAttendedCount() {
+		return $this->getUserTrainings()->andWhere(["attended" => false])->count();
 	}
 
 }
