@@ -2,9 +2,9 @@
 
 return [
 	'class' => 'yii\db\Connection',
-	'dsn' => 'mysql:host=mysql;dbname=sd_intern',
-	'username' => 'root',
-	'password' => 'root',
+	'dsn' => 'mysql:host=' . env("DB_HOST") . ';dbname=' . env("DB_NAME"),
+	'username' => env("DB_USER"),
+	'password' => env("DB_PASSWORD"),
 	'charset' => 'utf8',
 
 	// Schema cache options (for production environment)
