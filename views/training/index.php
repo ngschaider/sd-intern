@@ -21,6 +21,8 @@ echo GridView::widget([
 		"location.name",
 		"start:datetime",
 		"end:datetime",
+		"attendedCount",
+		"notAttendedCount",
 		[
 			"class" => "app\components\ActionColumn",
 			"template" => "{view}{update}{delete}{users}",
@@ -30,8 +32,6 @@ echo GridView::widget([
 				}
 			],
 		],
-		"attendedCount",
-		"notAttendedCount",
 	],
 ]);
 
