@@ -26,6 +26,9 @@ use yii\web\IdentityInterface;
  * @property-read User $createdByUser
  * @property-read UserTraining[] $userTrainings
  * @property-read void|string $authKey
+ * @property-read integer $attendedCount
+ * @property-read integer $notAttendedCount
+ * @property-read float[] $attendancePercentages
  * @property boolean $enabled
  */
 class User extends ActiveRecord implements IdentityInterface {
@@ -126,6 +129,52 @@ class User extends ActiveRecord implements IdentityInterface {
 
 	public function getUserTrainings() {
 		return $this->hasMany(UserTraining::class, ["userId" => "id"]);
+	}
+
+	public function getAttendedCount() {
+		return $this->getUserTrainings()->andWhere(["attended" => true])->count();
+	}
+
+	public function getNotAttendedCount() {
+		return $this->getUserTrainings()->andWhere(["attended" => false])->count();
+	}
+
+	/**
+	 * Returns the percentage of attended trainings for this user
+	 *
+	 * @param null $end timestamp to which trainings should be considered.
+	 * @return float
+	 * @throws \yii\db\Exception
+	 */
+	public function getAttendancePercentage($end = null) {
+		if($end === null) {
+			$end = time();
+		}
+
+		$end = date("Y-m-d", $end);
+
+		$sql = "SELECT SUM(ut.attended)/COUNT(ut.attended) as percentage FROM userTrainings ut JOIN trainings t ON ut.trainingId = t.id WHERE userId = :userId AND t.end <= :end";
+
+		return Yii::$app->db->createCommand($sql, [
+			":userId" => $this->id,
+			":end" => $end,
+		])->queryScalar();
+	}
+
+	/**
+	 * Returns an array containing the attendance percentage for every training
+	 *
+	 * @return float[] keys contains the end of the training, values the attendance percentage
+	 * @throws \yii\db\Exception
+	 */
+	public function getAttendancePercentages() {
+		$ret = [];
+		foreach($this->userTrainings as $userTraining) {
+			$timestamp = strtotime($userTraining->training->end);
+			$ret[$timestamp] = $this->getAttendancePercentage($timestamp);
+		}
+
+		return $ret;
 	}
 
 }

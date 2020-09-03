@@ -8,7 +8,7 @@
  */
 
 use yii\data\ActiveDataProvider;
-use yii\grid\GridView;
+use app\components\GridView;
 use yii\helpers\Html;
 use yii\web\View;
 

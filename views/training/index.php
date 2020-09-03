@@ -9,12 +9,13 @@
 
 use app\components\UTF8;
 use yii\data\ActiveDataProvider;
-use yii\grid\GridView;
+use app\components\GridView;
 use yii\helpers\Html;
 use yii\web\View;
 
+?>
 
-echo GridView::widget([
+<?= GridView::widget([
 	"dataProvider" => $dataProvider,
 	"columns" => [
 		"id",
@@ -33,7 +34,6 @@ echo GridView::widget([
 			],
 		],
 	],
-]);
+]) ?>
 
-
-echo Html::a("Training erstellen", ["create"]);
+<?php Html::a("Training erstellen", ["create"]) ?>

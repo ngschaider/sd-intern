@@ -6,7 +6,9 @@
 namespace app\models;
 
 use app\components\ActiveRecord;
+use Yii;
 use yii\db\ActiveQuery;
+use yii\db\DataReader;
 
 /**
  * Class Training
@@ -68,6 +70,7 @@ class Training extends ActiveRecord {
 		$userTraining = new UserTraining();
 		$userTraining->trainingId = $this->id;
 		$userTraining->userId = $user->id;
+
 		return $userTraining->save();
 	}
 
@@ -86,11 +89,45 @@ class Training extends ActiveRecord {
 	}
 
 	public function getAttendedPercentage() {
+		if(count($this->userTrainings) < 1) {
+			return 1;
+		}
+
 		return $this->attendedCount / ($this->notAttendedCount + $this->attendedCount);
 	}
 
 	public function getNotAttendedPercentage() {
+		if(count($this->userTrainings) < 1) {
+			return 1;
+		}
+
 		return $this->notAttendedCount / ($this->notAttendedCount + $this->attendedCount);
+	}
+
+	/**
+	 * @param null $end
+	 * @return false|string|DataReader|null
+	 */
+	public static function getAttendancePercentage($end = null) {
+		if($end === null) {
+			$end = time();
+		}
+		$end = date("Y-m-d", $end);
+
+		$trainings = Training::find()->andWhere("end <= :end", [
+			":end" => $end,
+		])->all();
+
+		if(count($trainings) < 1) {
+			return 0;
+		}
+
+		$sum = 0;
+		foreach($trainings as $training) {
+			$sum += $training->attendedPercentage;
+		}
+
+		return $sum / count($trainings);
 	}
 
 }

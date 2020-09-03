@@ -9,5 +9,6 @@ class UTF8 {
 	const WASTEBASKET = "🗑";
 	const MAN_DANCING = "🕺";
 	const WOMAN_DANCING = "💃";
+	const HEAVY_BLACK_HEART = "❤";
 
 }

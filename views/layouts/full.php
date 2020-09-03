@@ -4,6 +4,7 @@
  * @var $content string
  */
 
+use app\components\UTF8;
 use yii\helpers\Html;
 use app\components\Nav;
 use yii\bootstrap4\NavBar;
@@ -38,12 +39,13 @@ AppAsset::register($this);
 	echo Nav::widget([
 		"options" => ["class" => "navbar-nav ml-auto"],
 		"items" => [
-			["label" => "Home", 'url' => ['/site/index']],
-			["label" => "Trainings", "url" => ["/training/index"], "adminOnly" => true],
-			["label" => "Locations", "url" => ["/location/index"], "adminOnly" => true],
+			["label" => "Home", 'url' => ['/site']],
+			["label" => "Statistiken", "url" => ["/statistic"], "adminOnly" => true],
+			["label" => "Trainings", "url" => ["/training"], "adminOnly" => true],
+			["label" => "Locations", "url" => ["/location"], "adminOnly" => true],
 			["label" => "Admin", "adminOnly" => true, "items" => [
-				["label" => "Benutzer", 'url' => ["/user/index"]],
-				["label" => "Benutzergruppen", 'url' => ["/usergroup/index"]],
+				["label" => "Benutzer", 'url' => ["user"]],
+				["label" => "Benutzergruppen", 'url' => ["usergroup"]],
 			]],
 			Yii::$app->user->isGuest ? (
 			["label" => "Login", "url" => ["/site/login"]]
@@ -67,7 +69,8 @@ AppAsset::register($this);
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; Show & Dance Triestingtal <?= date('Y') ?></p>
+        <p class="float-sm-left">&copy; Show & Dance Triestingtal <?= date('Y') ?></p>
+        <p class="float-sm-right">Made with <?= UTF8::HEAVY_BLACK_HEART ?> by <a href="https://ngschaider.at/">Niklas Gschaider</a></p>
     </div>
 </footer>
 

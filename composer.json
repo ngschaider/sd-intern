@@ -21,8 +21,10 @@
         "rmrevin/yii2-fontawesome": "^3.6",
         "kartik-v/yii2-datecontrol": "^1.9",
         "kartik-v/yii2-widgets": "^3.4",
-        "arogachev/yii2-many-to-many": "^0.3.0"
-    },
+        "arogachev/yii2-many-to-many": "^0.3.0",
+        "miloschuman/yii2-highcharts-widget": "^8.0",
+		"ext-http": "*"
+	},
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
         "yiisoft/yii2-gii": "~2.1.0",
