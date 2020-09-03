@@ -44,8 +44,8 @@ AppAsset::register($this);
 			["label" => "Trainings", "url" => ["/training"], "adminOnly" => true],
 			["label" => "Locations", "url" => ["/location"], "adminOnly" => true],
 			["label" => "Admin", "adminOnly" => true, "items" => [
-				["label" => "Benutzer", 'url' => ["user"]],
-				["label" => "Benutzergruppen", 'url' => ["usergroup"]],
+				["label" => "Benutzer", 'url' => ["/user"]],
+				["label" => "Benutzergruppen", 'url' => ["/usergroup"]],
 			]],
 			Yii::$app->user->isGuest ? (
 			["label" => "Login", "url" => ["/site/login"]]
