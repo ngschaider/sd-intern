@@ -149,7 +149,7 @@ class User extends ActiveRecord implements IdentityInterface {
 
 		$end = date("Y-m-d", $end);
 
-		$sql = "SELECT SUM(ut.attended)/COUNT(ut.attended) as percentage FROM " . Yii::$app->db->tablePrefix . "userTrainings ut JOIN trainings t ON ut.trainingId = t.id WHERE userId = :userId AND t.end <= :end";
+		$sql = "SELECT SUM(ut.attended)/COUNT(ut.attended) as percentage FROM " . Yii::$app->db->tablePrefix . "userTrainings ut JOIN " . Yii::$app->db->tablePrefix . "trainings t ON ut.trainingId = t.id WHERE userId = :userId AND t.end <= :end";
 
 		return Yii::$app->db->createCommand($sql, [
 			":userId" => $this->id,
