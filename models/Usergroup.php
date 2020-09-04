@@ -9,6 +9,7 @@ namespace app\models;
 use app\components\ActiveRecord;
 use arogachev\ManyToMany\behaviors\ManyToManyBehavior;
 use arogachev\ManyToMany\validators\ManyToManyValidator;
+use Yii;
 use yii\base\InvalidConfigException;
 use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
@@ -63,7 +64,7 @@ class Usergroup extends ActiveRecord {
 	 * @throws InvalidConfigException
 	 */
 	public function getUsers() {
-		return $this->hasMany(User::class, ["id" => "userId"])->viaTable("userUsergroups", ["usergroupId" => "id"]);
+		return $this->hasMany(User::class, ["id" => "userId"])->viaTable(Yii::$app->db->tablePrefix . "userUsergroups", ["usergroupId" => "id"]);
 	}
 
 }
