@@ -48,10 +48,6 @@ class User extends ActiveRecord implements IdentityInterface {
 		return parent::beforeSave($insert);
 	}
 
-	public static function tableName() {
-		return "users";
-	}
-
 	public static function findIdentity($id) {
 		return static::findOne($id);
 	}
