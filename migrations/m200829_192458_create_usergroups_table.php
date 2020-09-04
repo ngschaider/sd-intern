@@ -11,7 +11,7 @@ class m200829_192458_create_usergroups_table extends Migration {
 	 * {@inheritdoc}
 	 */
 	public function safeUp() {
-		$this->createTable("usergroups", [
+		$this->createTable("{{%usergroups}}", [
 			"id" => $this->primaryKey(),
 			"name" => $this->string()->notNull(),
 		]);
@@ -21,7 +21,7 @@ class m200829_192458_create_usergroups_table extends Migration {
 	 * {@inheritdoc}
 	 */
 	public function safeDown() {
-		$this->dropTable("usergroups");
+		$this->dropTable("{{%usergroups}}");
 	}
 
 }

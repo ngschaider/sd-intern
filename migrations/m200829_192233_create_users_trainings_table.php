@@ -11,7 +11,7 @@ class m200829_192233_create_users_trainings_table extends Migration {
 	 * {@inheritdoc}
 	 */
 	public function safeUp() {
-		$this->createTable("userTrainings", [
+		$this->createTable("{{%userTrainings}}", [
 			"id" => $this->primaryKey(),
 			"trainingId" => $this->integer()->notNull(),
 			"userId" => $this->integer()->notNull(),
@@ -24,7 +24,7 @@ class m200829_192233_create_users_trainings_table extends Migration {
 	 * {@inheritdoc}
 	 */
 	public function safeDown() {
-		$this->dropTable("userTrainings");
+		$this->dropTable("{{%userTrainings}}");
 	}
 
 }

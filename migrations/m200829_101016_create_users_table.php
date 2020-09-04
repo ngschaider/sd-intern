@@ -12,7 +12,7 @@ class m200829_101016_create_users_table extends Migration {
 	 * @throws \yii\base\Exception
 	 */
 	public function safeUp() {
-		$this->createTable("users", [
+		$this->createTable("{{%users}}", [
 			"id" => $this->primaryKey(),
 			"username" => $this->string()->notNull(),
 			"firstname" => $this->string()->null(),
@@ -21,7 +21,7 @@ class m200829_101016_create_users_table extends Migration {
 			"allowLogin" => $this->boolean()->notNull()->defaultValue(0),
 		]);
 
-		$this->insert("users", [
+		$this->insert("{{%users}}", [
 			"id" => 1,
 			"username" => "admin",
 			"passwordHash" => Yii::$app->security->generatePasswordHash("admin"),
@@ -33,7 +33,7 @@ class m200829_101016_create_users_table extends Migration {
 	 * {@inheritdoc}
 	 */
 	public function safeDown() {
-		$this->dropTable("users");
+		$this->dropTable("{{%users}}");
 	}
 
 }

@@ -64,7 +64,7 @@ class Usergroup extends ActiveRecord {
 	 * @throws InvalidConfigException
 	 */
 	public function getUsers() {
-		return $this->hasMany(User::class, ["id" => "userId"])->viaTable(Yii::$app->db->tablePrefix . "userUsergroups", ["usergroupId" => "id"]);
+		return $this->hasMany(User::class, ["id" => "userId"])->viaTable("{{%userUsergroups}}", ["usergroupId" => "id"]);
 	}
 
 }

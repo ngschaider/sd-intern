@@ -11,7 +11,7 @@ class m200829_222202_create_locations_table extends Migration {
 	 * {@inheritdoc}
 	 */
 	public function safeUp() {
-		$this->createTable("locations", [
+		$this->createTable("{{%locations}}", [
 			"id" => $this->primaryKey(),
 			"name" => $this->string()->notNull(),
 		]);
@@ -21,7 +21,7 @@ class m200829_222202_create_locations_table extends Migration {
 	 * {@inheritdoc}
 	 */
 	public function safeDown() {
-		$this->dropTable("locations");
+		$this->dropTable("{{%locations}}");
 	}
 
 }

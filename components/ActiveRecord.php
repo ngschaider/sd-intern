@@ -21,7 +21,7 @@ class ActiveRecord extends \yii\db\ActiveRecord {
 	const SCENARIO_UPDATE = "update";
 
 	public static function tableName() {
-		return  Yii::$app->db->tablePrefix . lcfirst(StringHelper::basename(get_called_class())) . "s";
+		return  "{{%" . lcfirst(StringHelper::basename(get_called_class())) . "s}}";
 	}
 
 	public function __construct($config = []) {
