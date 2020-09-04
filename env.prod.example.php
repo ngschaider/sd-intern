@@ -8,4 +8,5 @@ return [
 	"DB_USER" => "sd_intern",
 	"DB_PASSWORD" => "",
 	"DB_NAME" => "sd_intern",
+	"TABLE_PREFIX" => "sd_",
 ];

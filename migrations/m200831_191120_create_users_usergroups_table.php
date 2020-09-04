@@ -1,6 +1,6 @@
 <?php /** @noinspection PhpIllegalPsrClassPathInspection */
 
-use yii\db\Migration;
+use app\components\Migration;
 
 /**
  * Handles the creation of table `{{%users_usergroups}}`.

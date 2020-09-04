@@ -9,7 +9,6 @@ namespace app\models;
 use app\components\ActiveRecord;
 use arogachev\ManyToMany\behaviors\ManyToManyBehavior;
 use arogachev\ManyToMany\validators\ManyToManyValidator;
-use Yii;
 use yii\base\InvalidConfigException;
 use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;

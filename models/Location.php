@@ -5,7 +5,7 @@
 
 namespace app\models;
 
-use yii\db\ActiveRecord;
+use app\components\ActiveRecord;
 
 /**
  * Class Location

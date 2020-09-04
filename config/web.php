@@ -1,7 +1,8 @@
 <?php
 
 use kartik\datecontrol\Module;
-use kartik\widgets\DateTimePicker;
+
+require_once(__DIR__ . "/env_setup.php");
 
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';

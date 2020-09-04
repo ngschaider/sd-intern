@@ -1,6 +1,6 @@
 <?php /** @noinspection PhpIllegalPsrClassPathInspection */
 
-use yii\db\Migration;
+use app\components\Migration;
 
 /**
  * Class m200901_183652_add_foreign_keys

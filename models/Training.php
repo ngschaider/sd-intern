@@ -6,7 +6,6 @@
 namespace app\models;
 
 use app\components\ActiveRecord;
-use Yii;
 use yii\db\ActiveQuery;
 use yii\db\DataReader;
 
