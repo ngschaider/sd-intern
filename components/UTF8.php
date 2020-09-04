@@ -10,5 +10,8 @@ class UTF8 {
 	const MAN_DANCING = "🕺";
 	const WOMAN_DANCING = "💃";
 	const HEAVY_BLACK_HEART = "❤";
+	const SQUARE_CROSSHATCH = "▦";
+	const PLUS = "+";
+	const MINUS = "−";
 
 }

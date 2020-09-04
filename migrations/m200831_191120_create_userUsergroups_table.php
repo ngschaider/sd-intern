@@ -3,9 +3,9 @@
 use app\components\Migration;
 
 /**
- * Handles the creation of table `{{%users_usergroups}}`.
+ * Handles the creation of table `{{%userUsergroups}}`.
  */
-class m200831_191120_create_users_usergroups_table extends Migration {
+class m200831_191120_create_userUsergroups_table extends Migration {
 
 	/**
 	 * {@inheritdoc}

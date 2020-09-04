@@ -13,9 +13,9 @@ use yii\helpers\Html;
             <div class="row h-100 align-items-center">
                 <div class="col-12 text-center">
                     <!--<h1 class="font-weight-light">Show & Dance Triestingtal</h1>-->
-					<?= Html::img("@web/images/logo-512.png", ["class" => "img", "style" => "height: 300px"]); ?>
+					<?= Html::img("@web/images/logo_shadow.png", ["class" => "img", "style" => "height: 300px"]); ?>
                     <p class="lead">
-                        <span style="padding: 5px 10px; border-radius: 5px; text-shadow: 0 0 15px rgba(0, 0, 0, 0.75)">
+                        <span style="padding: 5px 10px; border-radius: 5px; text-shadow: 1px 1px 2px rgba(0, 0, 0, 1)">
                             Internal Management Platform
                         </span>
                     </p>

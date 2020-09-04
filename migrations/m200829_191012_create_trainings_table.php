@@ -3,7 +3,7 @@
 use app\components\Migration;
 
 /**
- * Handles the creation of table `{{%events}}`.
+ * Handles the creation of table `{{%trainings}}`.
  */
 class m200829_191012_create_trainings_table extends Migration {
 

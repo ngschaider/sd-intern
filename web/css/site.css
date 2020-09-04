@@ -108,7 +108,7 @@ a.desc:after {
     min-height: 400px;
     background-position: center;
     background-repeat: no-repeat;
-    background-image: linear-gradient(67deg, #e54563 calc(50% + 10px), #73bae2 calc(50% + 10px));
+    background-image: linear-gradient(67deg, #e1415f calc(50% + 10px), #6db6de calc(50% + 10px));
 }
 
 .masthead .lead {
