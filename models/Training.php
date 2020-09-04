@@ -107,11 +107,11 @@ class Training extends ActiveRecord {
 		if($end === null) {
 			$end = time();
 		}
-		$end = date("Y-m-d", $end);
 
-		$trainings = Training::find()->andWhere("end <= :end", [
-			":end" => $end,
-		])->all();
+		$end = date("Y-m-d H:i:s", $end);
+
+		/** @var Training[] $trainings */
+		$trainings = Training::find()->andWhere(["<=", "end", $end])->all();
 
 		if(count($trainings) < 1) {
 			return 0;

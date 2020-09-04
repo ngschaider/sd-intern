@@ -140,32 +140,44 @@ class User extends ActiveRecord implements IdentityInterface {
 	 *
 	 * @param null $end timestamp to which trainings should be considered.
 	 * @return float
-	 * @throws \yii\db\Exception
 	 */
 	public function getAttendancePercentage($end = null) {
 		if($end === null) {
 			$end = time();
 		}
 
-		$end = date("Y-m-d", $end);
+		$trainings = [];
+		foreach($this->userTrainings as $userTraining) {
+			if($userTraining->training->end) {
+				if(strtotime($userTraining->training->end) <= $end) {
+					$trainings[] = $userTraining->training;
+				}
+			}
+		}
 
-		$sql = "SELECT SUM(ut.attended)/COUNT(ut.attended) as percentage FROM " . Yii::$app->db->tablePrefix . "userTrainings ut JOIN " . Yii::$app->db->tablePrefix . "trainings t ON ut.trainingId = t.id WHERE userId = :userId AND t.end <= :end";
+		if(count($trainings) < 1) {
+			return 0;
+		}
 
-		return Yii::$app->db->createCommand($sql, [
-			":userId" => $this->id,
-			":end" => $end,
-		])->queryScalar();
+		$sum = 0;
+		foreach($trainings as $training) {
+			$sum += $training->attendedPercentage;
+		}
+
+		return $sum / count($trainings);
 	}
 
 	/**
 	 * Returns an array containing the attendance percentage for every training
 	 *
 	 * @return float[] keys contains the end of the training, values the attendance percentage
-	 * @throws \yii\db\Exception
 	 */
 	public function getAttendancePercentages() {
 		$ret = [];
 		foreach($this->userTrainings as $userTraining) {
+			if(strtotime($userTraining->training->start) > time()) {
+				continue;
+			}
 			$timestamp = strtotime($userTraining->training->end);
 			$ret[$timestamp] = $this->getAttendancePercentage($timestamp);
 		}
