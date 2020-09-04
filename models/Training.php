@@ -29,10 +29,6 @@ use yii\db\DataReader;
  */
 class Training extends ActiveRecord {
 
-	public static function tableName() {
-		return "trainings";
-	}
-
 	public function rules() {
 		return [
 			[["start", "end", "isOptional"], "required"],
