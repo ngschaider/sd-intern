@@ -15,6 +15,7 @@ class FramePosition extends ActiveRecord {
 		return [
 			[["number"], "integer", "min" => 0, "max" => "99"],
 			[["x", "y"], "number", "min" => -1, "max" => 1],
+			[["color"], "string"],
 			[["rotation"], "number"],
 		];
 	}

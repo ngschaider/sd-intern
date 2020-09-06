@@ -12,6 +12,8 @@ use Symfony\Component\DomCrawler\Form;
 
 /**
  *
+ * @property-read integer $id
+ *
  * @property-read Formation $formation
  * @property-read FramePosition[] $framePositions
  */

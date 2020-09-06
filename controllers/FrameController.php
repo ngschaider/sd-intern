@@ -11,10 +11,12 @@ use app\components\Controller;
 use app\components\ModelNotFoundException;
 use app\models\Formation;
 use app\models\Frame;
+use app\models\FramePosition;
 use Throwable;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\db\StaleObjectException;
+use yii\web\BadRequestHttpException;
 use yii\web\Response;
 
 class FrameController extends Controller {
@@ -50,6 +52,7 @@ class FrameController extends Controller {
 	}
 
 	/**
+	 * @param $id
 	 * @return string|Response
 	 * @throws ModelNotFoundException
 	 */
@@ -90,6 +93,7 @@ class FrameController extends Controller {
 
 	/**
 	 * @param $id
+	 * @return string
 	 * @throws ModelNotFoundException
 	 */
 	public function actionEditor($id) {
@@ -100,6 +104,60 @@ class FrameController extends Controller {
 
 		return $this->render("editor", [
 			"model" => $model,
+		]);
+	}
+
+	public function actionSubmit($id) {
+		if(!Yii::$app->request->isPost) {
+			throw new BadRequestHttpException();
+		}
+
+		$frame = Frame::findOne(["id" => $id]);
+		if(!$frame) {
+			throw new ModelNotFoundException();
+		}
+
+		$framePositions = Yii::$app->request->post("FramePosition", []);
+
+		$status = "success";
+		$newIds = [];
+		foreach($framePositions as $framePosition) {
+			if(isset($framePosition["id"])) {
+				$model = FramePosition::findOne(["id" => $framePosition["id"]]);
+				if(!$model) {
+					throw new ModelNotFoundException();
+				}
+			} else {
+				$model = new FramePosition();
+				$model->frameId = $frame->id;
+			}
+
+			$model->setAttributes($framePosition);
+
+			if($model->isNewRecord) {
+				if($model->save()) {
+					$newIds[] = $model->id;
+				} else {
+					$status = "error";
+				}
+			} else  {
+				if(!$model->save()) {
+					$status = "error";
+				}
+			}
+		}
+
+		return $this->asJson([
+			"status" => "success",
+			"newIds" => $newIds,
+		]);
+	}
+
+	public function actionList($id) {
+		$models = Frame::findAll(["formationId" => $id]);
+
+		return $this->render("list", [
+			"models" => $models,
 		]);
 	}
 

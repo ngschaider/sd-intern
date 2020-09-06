@@ -1,22 +1,45 @@
 class FrameEditor {
     canvas;
 
-    numGridLines = 3;
+    numGridLines = 7;
     gridLines = [];
 
-    canvasEl;
+    xInputEl;
+    yInputEl;
+    rotInputEl;
 
-    constructor(id, framePositions) {
-        $("#" + id + "-add-position").click(this.onNewPosition.bind(this));
-        $("#" + id + "-plus-grid").click(this.onPlusGrid.bind(this));
-        $("#" + id + "-minus-grid").click(this.onMinusGrid.bind(this));
+    readonly;
 
+    positions = [];
+    submitUrl = "";
 
-        this.canvasEl = document.getElementById(id);
+    constructor(id, framePositions, submitUrl, readonly) {
+        this.submitUrl = submitUrl;
+        this.readonly = readonly;
 
-        document.addEventListener("keypress", this.onKeypress.bind(this));
+        if (!this.readonly) {
+            $("#" + id + "-add-position").click(this.onNewPosition.bind(this));
+            $("#" + id + "-plus-grid").click(this.onPlusGrid.bind(this));
+            $("#" + id + "-minus-grid").click(this.onMinusGrid.bind(this));
 
-        var info = this.canvasEl.parentElement.getBoundingClientRect();
+            document.addEventListener("keypress", this.onKeypress.bind(this));
+            document.getElementById(id + "-submit").addEventListener("click", this.onSubmit.bind(this));
+
+            this.numberEl = document.getElementById(id + "-number");
+            this.colorEl = document.getElementById(id + "-color");
+            this.xInputEl = document.getElementById(id + "-position-x");
+            this.yInputEl = document.getElementById(id + "-position-y");
+            this.rotInputEl = document.getElementById(id + "-rotation");
+
+            this.numberEl.addEventListener("change", this.onNumberChange.bind(this));
+            this.colorEl.addEventListener("change", this.onColorChange.bind(this));
+            this.xInputEl.addEventListener("change", this.onXInputChange.bind(this));
+            this.yInputEl.addEventListener("change", this.onYInputChange.bind(this));
+            this.rotInputEl.addEventListener("change", this.onRotInputChange.bind(this));
+        }
+
+        var canvasEl = document.getElementById(id);
+        var info = canvasEl.parentElement.getBoundingClientRect();
 
         var width = info.width;
         var height = width;
@@ -28,10 +51,33 @@ class FrameEditor {
             selection: false,
         });
 
-        this.canvas.on('object:moving', this.onCanvasMoving.bind(this));
+        if(!this.readonly) {
+            this.canvas.on('object:moving', this.onObjectMoving.bind(this));
+            this.canvas.on('selection:created', this.onSelectionCreated.bind(this));
+            this.canvas.on('selection:cleared', this.hideInputElements.bind(this));
+            this.canvas.on('selection:updated', this.onSelectionUpdated.bind(this));
+        }
+
+        this.deserialize(framePositions);
 
         this.drawBorder();
         this.drawGrid();
+    }
+
+    onSubmit(e) {
+        var data = this.serialize();
+
+        $.post(this.submitUrl, {FramePosition: data}, function (data, status) {
+            if (data.status === "success") {
+                alert("Erfolgreich gespeichert!");
+                for (var i = 0; i < data.newIds.length; i++) {
+                    this.positions[i].id = data.newIds[i];
+                }
+            } else {
+                alert("Speichern fehlgeschlagen");
+                console.log(data);
+            }
+        }.bind(this));
     }
 
     snapToGridX(x) {
@@ -55,40 +101,146 @@ class FrameEditor {
         return y;
     }
 
-    getCanvasActive() {
-        return this.canvaseEl === document.activeElement;
+    onNumberChange(e) {
+        var object = this.canvas.getActiveObject();
+        console.log(object);
+        if (!object) {
+            return;
+        }
+
+        object.item(1).set("text", e.target.value);
+        this.canvas.renderAll();
+    }
+
+    onColorChange(e) {
+        var object = this.canvas.getActiveObject();
+        console.log(object);
+        if (!object) {
+            return;
+        }
+
+        object.item(0).set("fill", e.target.value);
+        this.canvas.renderAll();
+    }
+
+    onXInputChange(e) {
+        var object = this.canvas.getActiveObject();
+        if (!object) {
+            return;
+        }
+        object.left = e.target.value * this.canvas.getWidth();
+        object.setCoords();
+        this.canvas.requestRenderAll();
+    }
+
+    onYInputChange(e) {
+        var object = this.canvas.getActiveObject();
+        if (!object) {
+            return;
+        }
+        object.top = e.target.value * this.canvas.getHeight();
+        object.setCoords();
+        this.canvas.requestRenderAll();
+    }
+
+    onRotInputChange(e) {
+        var object = this.canvas.getActiveObject();
+        if (!object) {
+            return;
+        }
+        object.angle = e.target.value;
+        object.setCoords();
+        this.canvas.requestRenderAll();
     }
 
     onKeypress(event) {
         var spaceX = this.getGridSpaceX();
         var spaceY = this.getGridSpaceY();
-        var objects = this.canvas.getActiveObjects();
-        for (var i = 0; i < objects.length; i++) {
-            var x = objects[i].left;
-            var y = objects[i].top;
+        var object = this.canvas.getActiveObject();
 
-            if (event.key == "w") {
-                y -= spaceY;
-            } else if (event.key == "a") {
-                x -= spaceX;
-            } else if (event.key == "s") {
-                y += spaceY;
-            } else if (event.key == "d") {
-                x += spaceX;
+        if (!object) {
+            return;
+        }
+
+        if (["w", "a", "s", "d"].indexOf(event.key.toLowerCase()) !== -1) {
+            // move
+            if (event.key.toLowerCase() === "w") {
+                object.top -= spaceY;
+            } else if (event.key.toLowerCase() === "a") {
+                object.left -= spaceX;
+            } else if (event.key.toLowerCase() === "s") {
+                object.top += spaceY;
+            } else if (event.key.toLowerCase() === "d") {
+                object.left += spaceX;
             }
-            objects[i].set({
-                left: this.snapToGridX(x),
-                top: this.snapToGridY(y),
-            })
 
-            // we have to force redrawing manually because we are not in an FabricJs event
+            object.left = Math.max(0, object.left);
+            object.left = Math.min(this.canvas.getWidth(), object.left);
+
+            object.top = Math.max(0, object.top);
+            object.top = Math.min(this.canvas.getHeight(), object.top);
+
+            object.setCoords();
+            this.updateElementsWithObjectValues(object);
+            this.canvas.requestRenderAll();
+        }
+
+        if (["q", "e"].indexOf(event.key.toLowerCase()) !== -1) {
+            // rotate
+            if (event.key.toLowerCase() === "q") {
+                object.angle -= 360 / 16;
+            } else if (event.key.toLowerCase() === "e") {
+                object.angle += 360 / 16;
+            }
+
+            object.setCoords();
+            this.updateElementsWithObjectValues(object);
             this.canvas.requestRenderAll();
         }
     }
 
-    onCanvasMoving(options) {
+    onObjectMoving(options) {
         options.target.left = this.snapToGridX(options.target.left);
         options.target.top = this.snapToGridY(options.target.top);
+        this.updateElementsWithObjectValues(options.target);
+    }
+
+    hideInputElements() {
+        this.numberEl.classList.add("d-none");
+        this.colorEl.classList.add("d-none");
+        this.xInputEl.classList.add("d-none");
+        this.yInputEl.classList.add("d-none");
+        this.rotInputEl.classList.add("d-none");
+    }
+
+    onSelectionUpdated(options) {
+        this.updateElementsWithObjectValues(this.canvas.getActiveObject());
+    }
+
+    onSelectionCreated(options) {
+        this.showInputElements();
+        this.updateElementsWithObjectValues(this.canvas.getActiveObject());
+    }
+
+    showInputElements() {
+        if(this.readonly) return;
+        this.numberEl.classList.remove("d-none");
+        this.colorEl.classList.remove("d-none");
+        this.xInputEl.classList.remove("d-none");
+        this.yInputEl.classList.remove("d-none");
+        this.rotInputEl.classList.remove("d-none");
+    }
+
+    updateElementsWithObjectValues(object) {
+        if(this.readonly) return;
+
+        this.xInputEl.value = object.left / this.canvas.getWidth();
+        this.yInputEl.value = object.top / this.canvas.getHeight();
+
+        this.rotInputEl.value = object.angle;
+
+        this.numberEl.value = object.item(1).text;
+        this.colorEl.value = object.item(0).fill;
     }
 
     drawBorder() {
@@ -136,7 +288,8 @@ class FrameEditor {
     }
 
     onNewPosition() {
-        new Position(this);
+        var position = new Position(this);
+        this.positions.push(position);
     }
 
     onMinusGrid() {
@@ -168,16 +321,32 @@ class FrameEditor {
     transformHeight(x) {
         return y / this.canvas.getHeight();
     }
+
+    serialize() {
+        var data = [];
+        for (var i = 0; i < this.positions.length; i++) {
+            data.push(this.positions[i].serialize());
+        }
+        return data;
+    }
+
+    deserialize(data) {
+        for (var i = 0; i < data.length; i++) {
+            var pos = new Position(this);
+            pos.deserialize(data[i]);
+            this.positions.push(pos);
+        }
+    }
 }
 
 class Position {
 
     editor;
     group;
+    id = null;
 
     constructor(editor) {
         this.editor = editor;
-
 
         var triangle = new fabric.Triangle({
             left: 0,
@@ -201,14 +370,43 @@ class Position {
             left: editor.transformX(0),
             width: 50,
             height: 50,
-            stroke: 'red',
             originX: "center",
             originY: "center",
             hasControls: false,
-            //selectable: true,
+            selectable: !this.editor.readonly,
+            hoverCursor: this.editor.readonly ? "initial" : "move",
         })
 
         editor.canvas.add(this.group);
+        if(!this.editor.readonly) {
+            editor.canvas.setActiveObject(this.group);
+        }
+    }
+
+    serialize() {
+        var data = {
+            color: this.group.item(0).fill,
+            number: this.group.item(1).text,
+            x: this.group.left / this.editor.canvas.getWidth(),
+            y: this.group.top / this.editor.canvas.getHeight(),
+            rotation: this.group.angle,
+        }
+        if (this.id) {
+            data.id = this.id;
+        }
+
+        return data;
+    }
+
+    deserialize(data) {
+        this.id = data.id;
+        this.group.item(0).fill = data.color;
+        this.group.item(1).text = data.number.toString();
+        this.group.left = data.x * this.editor.canvas.getWidth();
+        this.group.top = data.y * this.editor.canvas.getHeight();
+        this.group.angle = data.rotation;
+        this.group.setCoords();
+        this.editor.canvas.requestRenderAll();
     }
 
     destroy() {

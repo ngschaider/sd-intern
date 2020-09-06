@@ -40,12 +40,15 @@ AppAsset::register($this);
 		"options" => ["class" => "navbar-nav ml-auto"],
 		"items" => [
 			["label" => "Home", 'url' => ['/site']],
+			["label" => "Bilder", "url" => ["/formation/list"]],
 			["label" => "Statistiken", "url" => ["/statistic"], "adminOnly" => true],
 			["label" => "Trainings", "url" => ["/training"], "adminOnly" => true],
 			["label" => "Locations", "url" => ["/location"], "adminOnly" => true],
 			["label" => "Admin", "adminOnly" => true, "items" => [
 				["label" => "Benutzer", 'url' => ["/user"]],
 				["label" => "Benutzergruppen", 'url' => ["/usergroup"]],
+				["label" => "Formationen", "url" => ["/formation"]],
+				["label" => "Bilder", "url" => ["/frame"]],
 			]],
 			Yii::$app->user->isGuest ? (
 			["label" => "Login", "url" => ["/site/login"]]

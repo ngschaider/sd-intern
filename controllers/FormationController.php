@@ -90,4 +90,14 @@ class FormationController extends Controller {
 		]);
 	}
 
+	public function actionList() {
+		$dataProvider = new ActiveDataProvider([
+			"query" => Formation::find(),
+		]);
+
+		return $this->render("list", [
+			"dataProvider" => $dataProvider,
+		]);
+	}
+
 }
