@@ -32,6 +32,7 @@ echo Highcharts::widget([
 		],
 		'yAxis' => [
 			"max" => 100,
+			"min" => 0,
 			'title' => ['text' => ''],
 		],
 		'series' => [
@@ -103,7 +104,7 @@ echo Highcharts::widget([
 $attendedCount = [];
 $trainingCount = [];
 foreach($model->userTrainings as $userTraining) {
-	if(strtotime($userTraining->training->start) > time()) {
+	if(strtotime($userTraining->training->end) > time()) {
 		continue;
 	}
 	$month = date("F", strtotime($userTraining->training->end));
