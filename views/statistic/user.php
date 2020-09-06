@@ -16,16 +16,12 @@ use miloschuman\highcharts\Highcharts;
 
 <?php
 $data = [];
-$maxPercentage = 0;
 foreach($model->attendancePercentages as $timestamp => $percentage) {
 	$percentage = FormatUtil::formatPercentage($percentage);
 	$data[] = [
 		$timestamp * 1000,
 		$percentage
 	];
-	if($percentage > $maxPercentage) {
-		$maxPercentage = $percentage;
-	}
 }
 echo Highcharts::widget([
 	'options' => [
@@ -35,12 +31,12 @@ echo Highcharts::widget([
 			"type" => "datetime",
 		],
 		'yAxis' => [
-			"max" => $maxPercentage,
+			"max" => 100,
 			'title' => ['text' => ''],
 		],
 		'series' => [
 			[
-				'name' => $model->username,
+				'name' => "",
 				'data' => $data,
 				"showInLegend" => false,
 			]

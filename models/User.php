@@ -146,25 +146,24 @@ class User extends ActiveRecord implements IdentityInterface {
 			$end = time();
 		}
 
-		$trainings = [];
+		$attendedCount = 0;
+		$totalCount = 0;
 		foreach($this->userTrainings as $userTraining) {
 			if($userTraining->training->end) {
 				if(strtotime($userTraining->training->end) <= $end) {
-					$trainings[] = $userTraining->training;
+					if($userTraining->attended) {
+						$attendedCount++;
+					}
+					$totalCount++;
 				}
 			}
 		}
 
-		if(count($trainings) < 1) {
-			return 0;
+		if($totalCount < 1) {
+			return 1;
 		}
 
-		$sum = 0;
-		foreach($trainings as $training) {
-			$sum += $training->attendedPercentage;
-		}
-
-		return $sum / count($trainings);
+		return $attendedCount / $totalCount;
 	}
 
 	/**
