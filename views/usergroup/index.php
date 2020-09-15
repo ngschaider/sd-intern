@@ -14,9 +14,9 @@ use yii\web\View;
 
 ?>
 
-<?php
+<?= Html::a("Benutzergruppe erstellen", ["create"], ["class" => "btn btn-success"]); ?>
 
-echo GridView::widget([
+<?= GridView::widget([
 	"dataProvider" => $dataProvider,
 	"columns" => [
 		"id",
@@ -25,8 +25,4 @@ echo GridView::widget([
 			"class" => "app\components\ActionColumn",
 		],
 	],
-]);
-
-echo Html::a("Benutzergruppe erstellen", ["create"]);
-
-?>
+]); ?>

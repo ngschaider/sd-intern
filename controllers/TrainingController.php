@@ -21,7 +21,10 @@ class TrainingController extends Controller {
 
 	public function actionIndex() {
 		$dataProvider = new ActiveDataProvider([
-			"query" => Training::find()
+			"query" => Training::find(),
+			"sort" => [
+				"defaultOrder" => ["start" => SORT_DESC]
+			]
 		]);
 
 		return $this->render("index", [

@@ -15,6 +15,8 @@ use yii\web\View;
 
 ?>
 
+<?= Html::a("Training erstellen", ["create"], ["class" => "btn btn-success"]) ?>
+
 <?= GridView::widget([
 	"dataProvider" => $dataProvider,
 	"columns" => [
@@ -35,5 +37,3 @@ use yii\web\View;
 		],
 	],
 ]) ?>
-
-<?php Html::a("Training erstellen", ["create"]) ?>

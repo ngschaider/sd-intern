@@ -11,9 +11,11 @@ use yii\data\ActiveDataProvider;
 use app\components\GridView;
 use yii\helpers\Html;
 use yii\web\View;
+?>
 
+<?= Html::a("Location erstellen", ["create"], ["class" => "btn btn-success"]); ?>
 
-echo GridView::widget([
+<?= GridView::widget([
 	"dataProvider" => $dataProvider,
 	"columns" => [
 		"id",
@@ -25,7 +27,4 @@ echo GridView::widget([
 			],
 		],
 	]
-]);
-
-
-echo Html::a("Location erstellen", ["create"]);
+]); ?>

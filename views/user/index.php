@@ -15,9 +15,9 @@ use yii\web\View;
 
 ?>
 
-<?php
+<?= Html::a("Benutzer erstellen", ["create"], ["class" => "btn btn-success"]); ?>
 
-echo GridView::widget([
+<?= GridView::widget([
 	"dataProvider" => $dataProvider,
 	"columns" => [
 		[
@@ -38,8 +38,4 @@ echo GridView::widget([
 			]
 		]
 	]
-]);
-
-echo Html::a("Benutzer erstellen", ["create"]);
-
-?>
+]); ?>
