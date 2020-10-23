@@ -3,9 +3,12 @@
 namespace app\models;
 
 use app\components\NotImplementedException;
+use DateInterval;
+use DateTime;
 use Yii;
 use yii\base\Exception;
 use app\components\ActiveRecord;
+use yii\helpers\ArrayHelper;
 use yii\web\IdentityInterface;
 
 /**
@@ -28,6 +31,8 @@ use yii\web\IdentityInterface;
  * @property-read integer $attendedCount
  * @property-read integer $notAttendedCount
  * @property-read float[] $attendancePercentages
+ * @property-read Training[] $attendedTrainings
+ * @property-read string $fullname
  * @property boolean $enabled
  */
 class User extends ActiveRecord implements IdentityInterface {
@@ -131,6 +136,14 @@ class User extends ActiveRecord implements IdentityInterface {
 		return $this->hasMany(UserTraining::class, ["userId" => "id"]);
 	}
 
+	public function getAttendedTrainings() {
+		return ArrayHelper::getColumn($this->getUserTrainings()->where(["attended" => true])->all(), "training");
+	}
+
+	public function didAttendTraining($training) {
+		return array_search($training->id, ArrayHelper::getColumn($this->attendedTrainings, "id"));
+	}
+
 	public function getAttendedCount() {
 		return $this->getUserTrainings()->andWhere(["attended" => true])->count();
 	}
@@ -186,6 +199,42 @@ class User extends ActiveRecord implements IdentityInterface {
 		}
 
 		return $ret;
+	}
+
+
+	/**
+	 * @param Training $training
+	 * @return bool
+	 */
+	public function canSignup($training) {
+		$now = new DateTime();
+		if($training->startObj < $now) {
+			// can not signup for a training in the past.
+			return false;
+		}
+
+		$trainingIds = ArrayHelper::getColumn($this->attendedTrainings, "trainingId");
+		if(array_search($training->id, $trainingIds) !== false) {
+			// already signed up
+			return false;
+		}
+
+		/** @var Training $lastTraining */
+		$lastTraining = Training::find()->orderBy(["end" => SORT_DESC])->where(["<", "end", $training->start])->one();
+		if($lastTraining && count($lastTraining->userTrainings) >= $lastTraining->maxUsers && $lastTraining->maxUsers >= 0) {
+			if(array_search($lastTraining->id, $trainingIds) === false) {
+				return true;
+			};
+		}
+
+		if(count($training->attendedUsers) >= $training->maxUsers && $training->maxUsers >= 0) {
+			return false;
+		}
+
+		$compare = new DateTime();
+		$compare->add(new DateInterval("PT24H"));
+
+		return $compare->diff($training->startObj)->invert;
 	}
 
 }

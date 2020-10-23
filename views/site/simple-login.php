@@ -2,7 +2,7 @@
 
 /**
  * @author Niklas Gschaider <niklas.gschaider@gschaider-systems.at>
- * @package app.views
+ * @package app.views.site
  *
  * @var \yii\web\View $this
  * @var array $items

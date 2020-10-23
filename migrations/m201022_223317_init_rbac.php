@@ -21,7 +21,7 @@ class m201022_223317_init_rbac extends Migration {
 		$usergroups->description = "Create/update/delete usergroups";
 		$auth->add($usergroups);
 
-		$trainings = $auth->createPermission("createTraining");
+		$trainings = $auth->createPermission("trainings");
 		$trainings->description = "Create/update/delete trainings";
 		$auth->add($trainings);
 

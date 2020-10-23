@@ -29,6 +29,11 @@ class FrameController extends Controller {
 				"rules" => [
 					[
 						"allow" => true,
+						"actions" => ["list"],
+						"roles" => ["@"],
+					],
+					[
+						"allow" => true,
 						"roles" => ["frames"],
 					]
 				]

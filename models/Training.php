@@ -6,8 +6,10 @@
 namespace app\models;
 
 use app\components\ActiveRecord;
+use DateTime;
 use yii\db\ActiveQuery;
 use yii\db\DataReader;
+use yii\helpers\ArrayHelper;
 
 /**
  * Class Training
@@ -15,17 +17,21 @@ use yii\db\DataReader;
  * @package app\models
  *
  * @property integer $id
- * @property integer $start
- * @property integer $end
+ * @property string $start
+ * @property string $end
  * @property-read Location $location
  * @property integer $locationId
  * @property-read User[] $users
  * @property boolean $isOptional
+ * @property integer $maxUsers
  * @property-read int $attendedCount
+ * @property-read User[] $attendedUsers
  * @property-read float $attendedPercentage
  * @property-read void $notAttendedPercentage
  * @property-read int $notAttendedCount
  * @property-read UserTraining[] $userTrainings
+ * @property-read DateTime $startObj
+ * @property-read DateTime $endObj
  */
 class Training extends ActiveRecord {
 
@@ -35,6 +41,14 @@ class Training extends ActiveRecord {
 			[["start", "end"], "date", "format" => "php:Y-m-d H:i:s"],
 			[["locationId"], "exist", "targetClass" => Location::class, "targetAttribute" => "id"],
 		];
+	}
+
+	public function getStartObj() {
+		return new DateTime($this->start);
+	}
+
+	public function getEndObj() {
+		return new DateTime($this->end);
 	}
 
 	/**
@@ -49,6 +63,10 @@ class Training extends ActiveRecord {
 	 */
 	public function getUserTrainings() {
 		return $this->hasMany(UserTraining::class, ["trainingId" => "id"]);
+	}
+
+	public function getAttendedUsers() {
+		return ArrayHelper::getColumn($this->getUserTrainings()->where(["attended" => true])->all(), "user");
 	}
 
 	/**

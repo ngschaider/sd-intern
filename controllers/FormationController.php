@@ -27,6 +27,11 @@ class FormationController extends Controller {
 				"rules" => [
 					[
 						"allow" => true,
+						"actions" => ["list"],
+						"roles" => ["@"],
+					],
+					[
+						"allow" => true,
 						"roles" => ["formations"],
 					]
 				]

@@ -7,11 +7,11 @@ namespace app\controllers;
 
 use app\components\Controller;
 use app\components\ModelNotFoundException;
-use app\components\NotImplementedException;
 use app\models\Training;
 use app\models\User;
 use app\models\Usergroup;
 use app\models\UserTraining;
+use http\Exception\InvalidArgumentException;
 use Throwable;
 use Yii;
 use yii\data\ActiveDataProvider;
@@ -264,8 +264,29 @@ class TrainingController extends Controller {
 		]);
 	}
 
+	/**
+	 * @return string
+	 * @throws ModelNotFoundException
+	 * @throws InvalidArgumentException
+	 */
 	public function actionSignup() {
+		if(Yii::$app->request->isPost) {
+			$trainingId = Yii::$app->request->post("trainingId");
+			if(!$trainingId) {
+				throw new InvalidArgumentException();
+			}
 
+			$training = Training::findOne(["id" => $trainingId]);
+			if(!$training) {
+				throw new ModelNotFoundException();
+			}
+
+			if(Yii::$app->user->identity->canSignup($training)) {
+				$training->addUser(Yii::$app->user);
+			}
+		}
+
+		return $this->render("signup");
 	}
 
 }

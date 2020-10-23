@@ -1,5 +1,6 @@
 <?php
 /**
+ * @package app.views.training
  * @author Niklas Gschaider <niklas.gschaider@gschaider-systems.at>
  *
  * @var View $this
