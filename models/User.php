@@ -230,7 +230,7 @@ class User extends ActiveRecord implements IdentityInterface {
 		}
 
 		$compare = new DateTime();
-		$compare->add(new DateInterval("PT24H"));
+		$compare->add(new DateInterval("PT48H"));
 
 		return $compare->diff($training->startObj)->invert;
 	}
