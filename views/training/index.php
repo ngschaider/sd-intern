@@ -22,8 +22,7 @@ use yii\web\View;
 	"columns" => [
 		"id",
 		"location.name",
-		"start:datetime",
-		"end:datetime",
+		"startEndReadable",
 		"attendedCount",
 		"notAttendedCount",
 		[

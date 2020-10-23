@@ -20,7 +20,8 @@ foreach($models as $model) {
 	?>
     <div class="card">
         <div class="card-body">
-            <h5><?= $model->start ?> - <?= $model->end ?></h5>
+            <h5><?= $model->startEndReadable ?></h5>
+            <h6><?= $model->location->name ?></h6>
             <div class="float-right">Teilnehmer: <?= count($model->attendedUsers) ?> / <?= $model->maxUsers ?></div>
             <div>
                 <b>Status:</b> <?= Yii::$app->user->identity->didAttendTraining($model) ? "<span style='color: green'>Angemeldet</span>" : "<span style='color: red'>Nicht angemeldet</span>"; ?>

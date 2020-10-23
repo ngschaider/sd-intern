@@ -69,11 +69,32 @@ class Training extends ActiveRecord {
 		return ArrayHelper::getColumn($this->getUserTrainings()->where(["attended" => true])->all(), "user");
 	}
 
+	public function getStartEndReadable() {
+		$startDay = $this->startObj->format("l");
+		$endDay = $this->endObj->format("l");
+
+		$startDate = $this->startObj->format("d.m.Y");
+		$endDate = $this->endObj->format("d.m.Y");
+
+		$startTime = $this->startObj->format("H:i");
+		$endTime = $this->endObj->format("H:i");
+
+		$ret = $startDay . ", " . $startDate . " " . $startTime;
+		if($startDate != $endDate) {
+			$ret .= $endDay . " " . $endDate . " " . $endTime;
+		} else if($startTime != $endTime) {
+			$ret .= " - " . $endTime;
+		}
+
+		return $ret;
+	}
+
 	/**
 	 * @param User $user
+	 * @param bool $attended
 	 * @return bool
 	 */
-	public function addUser($user) {
+	public function addUser($user, $attended = false) {
 		foreach($this->userTrainings as $userTraining) {
 			if($userTraining->userId == $user->id) {
 				return false;
@@ -81,6 +102,7 @@ class Training extends ActiveRecord {
 		}
 
 		$userTraining = new UserTraining();
+		$userTraining->attended = $attended;
 		$userTraining->trainingId = $this->id;
 		$userTraining->userId = $user->id;
 

@@ -220,7 +220,7 @@ class User extends ActiveRecord implements IdentityInterface {
 		/** @var Training $lastTraining */
 		$lastTraining = Training::find()->orderBy(["end" => SORT_DESC])->where(["<", "end", $training->start])->one();
 		if($lastTraining && count($lastTraining->userTrainings) >= $lastTraining->maxUsers && $lastTraining->maxUsers >= 0) {
-			if(array_search($lastTraining->id, $trainingIds) === false) {
+			if(!$this->didAttendTraining($lastTraining)) {
 				return true;
 			};
 		}

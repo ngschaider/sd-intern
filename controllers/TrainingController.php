@@ -283,7 +283,7 @@ class TrainingController extends Controller {
 			}
 
 			if(Yii::$app->user->identity->canSignup($training)) {
-				$training->addUser(Yii::$app->user);
+				$training->addUser(Yii::$app->user, true);
 			}
 		}
 
