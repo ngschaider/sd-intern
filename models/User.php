@@ -141,7 +141,7 @@ class User extends ActiveRecord implements IdentityInterface {
 	}
 
 	public function didAttendTraining($training) {
-		return array_search($training->id, ArrayHelper::getColumn($this->attendedTrainings, "id"));
+		return array_search($training->id, ArrayHelper::getColumn($this->attendedTrainings, "id")) !== false;
 	}
 
 	public function getAttendedCount() {
@@ -213,9 +213,7 @@ class User extends ActiveRecord implements IdentityInterface {
 			return false;
 		}
 
-		$trainingIds = ArrayHelper::getColumn($this->attendedTrainings, "trainingId");
-		if(array_search($training->id, $trainingIds) !== false) {
-			// already signed up
+		if($this->didAttendTraining($training)) {
 			return false;
 		}
 

@@ -103,10 +103,10 @@ class SiteController extends Controller {
 		 * @var User[] $users
 		 */
 		$users = User::find()->all();
-		$nonAdminUsers = array_filter($users, function($user) {
-			return !$user->isAdmin;
+		$allowedUsers = array_filter($users, function($user) {
+			return !$user->isAdmin && $user->allowLogin;
 		});
-		$items = ArrayHelper::getColumn(ArrayHelper::index($nonAdminUsers, "id"), "fullname");
+		$items = ArrayHelper::getColumn(ArrayHelper::index($allowedUsers, "id"), "fullname");
 
 		if(Yii::$app->request->isPost) {
 			$id = Yii::$app->request->post("username");
@@ -116,7 +116,7 @@ class SiteController extends Controller {
 					throw new ModelNotFoundException();
 				}
 
-				if(!$user->isAdmin) {
+				if(array_search($user->id, ArrayHelper::getColumn($allowedUsers, "id")) !== false) {
 					Yii::$app->user->login($user,  0);
 					$this->goBack();
 				}

@@ -23,7 +23,7 @@ foreach($models as $model) {
             <h5><?= $model->start ?> - <?= $model->end ?></h5>
             <div class="float-right">Teilnehmer: <?= count($model->attendedUsers) ?> / <?= $model->maxUsers ?></div>
             <div>
-                <b>Status:</b> <?= Yii::$app->user->identity->didAttendTraining($model) ? "Angemeldet" : "Nicht angemeldet"; ?>
+                <b>Status:</b> <?= Yii::$app->user->identity->didAttendTraining($model) ? "<span style='color: green'>Angemeldet</span>" : "<span style='color: red'>Nicht angemeldet</span>"; ?>
             </div>
 
 	        <?php if(Yii::$app->user->identity->canSignup($model)) {
