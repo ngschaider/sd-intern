@@ -36,7 +36,8 @@ class Training extends ActiveRecord {
 
 	public function rules() {
 		return [
-			[["start", "end", "isOptional"], "required"],
+			[["start", "end"], "required"],
+			[["maxUsers"], "integer"],
 			[["start", "end"], "date", "format" => "php:Y-m-d H:i:s"],
 			[["locationId"], "exist", "targetClass" => Location::class, "targetAttribute" => "id"],
 		];
