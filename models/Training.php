@@ -7,6 +7,8 @@ namespace app\models;
 
 use app\components\ActiveRecord;
 use DateTime;
+use DateTimeZone;
+use Yii;
 use yii\db\ActiveQuery;
 use yii\db\DataReader;
 use yii\helpers\ArrayHelper;
@@ -44,11 +46,15 @@ class Training extends ActiveRecord {
 	}
 
 	public function getStartObj() {
-		return new DateTime($this->start);
+		$dt = new DateTime($this->start, new DateTimeZone("UTC"));
+		$dt->setTimezone(new DateTimeZone(Yii::$app->timeZone));
+		return $dt;
 	}
 
 	public function getEndObj() {
-		return new DateTime($this->end);
+		$dt = new DateTime($this->end, new DateTimeZone("UTC"));
+		$dt->setTimezone(new DateTimeZone(Yii::$app->timeZone));
+		return $dt;
 	}
 
 	/**
