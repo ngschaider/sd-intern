@@ -22,7 +22,6 @@ use yii\helpers\ArrayHelper;
  * @property-read Location $location
  * @property integer $locationId
  * @property-read User[] $users
- * @property boolean $isOptional
  * @property integer $maxUsers
  * @property-read int $attendedCount
  * @property-read User[] $attendedUsers

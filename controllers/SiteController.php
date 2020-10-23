@@ -118,6 +118,7 @@ class SiteController extends Controller {
 
 				if(!$user->isAdmin) {
 					Yii::$app->user->login($user,  0);
+					$this->goBack();
 				}
 			}
 		}

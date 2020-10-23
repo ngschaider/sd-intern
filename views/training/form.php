@@ -28,7 +28,7 @@ use yii\bootstrap4\ActiveForm;
 <?= $form->field($model, "end")->widget(DateControl::class, [
 	"type" => DateControl::FORMAT_DATETIME
 ]); ?>
-<?= $form->field($model, "isOptional")->checkbox(); ?>
+<?= $form->field($model, "maxUsers")->input("number"); ?>
 
     <div class="form-group">
 		<?= Html::submitButton("Submit", ["class" => "btn btn-primary"]) ?>

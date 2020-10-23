@@ -32,6 +32,7 @@ class TrainingController extends Controller {
 						"actions" => ["signup"],
 						"roles" => ["?"],
 						"denyCallback" => function($rule, $action) {
+							Yii::$app->user->setReturnUrl(Yii::$app->request->url);
 							Yii::$app->response->redirect(["site/simple-login"]);
 						}
 					],
