@@ -11,8 +11,23 @@ use app\components\Controller;
 use app\components\ModelNotFoundException;
 use app\models\Training;
 use app\models\User;
+use yii\filters\AccessControl;
 
 class StatisticController extends Controller {
+
+	public function behaviors() {
+		return [
+			"access" => [
+				"class" => AccessControl::class,
+				"rules" => [
+					[
+						"allow" => true,
+						"roles" => ["statistics"],
+					]
+				]
+			]
+		];
+	}
 
 	public function actionUser($id) {
 		$model = User::findOne(["id" => $id]);

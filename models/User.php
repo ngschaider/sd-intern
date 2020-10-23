@@ -21,7 +21,6 @@ use yii\web\IdentityInterface;
  * @property string $passwordHash
  * @property boolean $allowLogin
  * @property-read bool $isAdmin
- * @property-read bool $isSuperadmin
  * @property-read User[] $createdUsers
  * @property-read User $createdByUser
  * @property-read UserTraining[] $userTrainings
@@ -52,12 +51,12 @@ class User extends ActiveRecord implements IdentityInterface {
 		return static::findOne($id);
 	}
 
-	public function getIsSuperadmin() {
-		return $this->id == 1;
+	public function getIsAdmin() {
+		return $this->id === 1;
 	}
 
-	public function getIsAdmin() {
-		return $this->isSuperadmin;
+	public function getFullname() {
+		return $this->firstname . " " . $this->lastname;
 	}
 
 	public function rules() {
@@ -93,6 +92,9 @@ class User extends ActiveRecord implements IdentityInterface {
 	 * @return boolean if password provided is valid for current user
 	 */
 	public function validatePassword($password) {
+		if(!$this->passwordHash) {
+			return false;
+		}
 		return Yii::$app->security->validatePassword($password, $this->passwordHash);
 	}
 
@@ -113,6 +115,8 @@ class User extends ActiveRecord implements IdentityInterface {
 	public function getAuthKey() {
 		throw new NotImplementedException();
 	}
+
+
 
 	/**
 	 * @param string $authKey

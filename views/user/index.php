@@ -30,10 +30,6 @@ use yii\web\View;
 		[
 			"class" => "app\components\ActionColumn",
 			"visibleButtons" => [
-				"delete" => function($model, $key, $index) {
-					/** @var User $model */
-					return !$model->isSuperadmin;
-				},
 				"view" => false,
 			]
 		]

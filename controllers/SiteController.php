@@ -2,9 +2,12 @@
 
 namespace app\controllers;
 
+use app\components\ModelNotFoundException;
+use app\models\User;
 use Yii;
 use yii\filters\AccessControl;
 use app\components\Controller;
+use yii\helpers\ArrayHelper;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
@@ -20,12 +23,17 @@ class SiteController extends Controller {
 		return [
 			'access' => [
 				'class' => AccessControl::class,
-				'only' => ['logout'],
+				'only' => ["login", "simpleLogin", "logout"],
 				'rules' => [
+					[
+						"actions" => ["login", "simpleLogin"],
+						"allow" => true,
+						"roles" => ["?"], // guest users
+					],
 					[
 						'actions' => ['logout'],
 						'allow' => true,
-						'roles' => ['@'],
+						'roles' => ['@'], // authenticated users
 					],
 				],
 			],
@@ -79,6 +87,43 @@ class SiteController extends Controller {
 
 		return $this->render('login', [
 			'model' => $model,
+		]);
+	}
+
+	/**
+	 * @return Response|string
+	 * @throws ModelNotFoundException
+	 */
+	public function actionSimpleLogin() {
+		if(!Yii::$app->user->isGuest) {
+			return $this->goHome();
+		}
+
+		/**
+		 * @var User[] $users
+		 */
+		$users = User::find()->all();
+		$nonAdminUsers = array_filter($users, function($user) {
+			return !$user->isAdmin;
+		});
+		$items = ArrayHelper::getColumn(ArrayHelper::index($nonAdminUsers, "id"), "fullname");
+
+		if(Yii::$app->request->isPost) {
+			$id = Yii::$app->request->post("username");
+			if($id) {
+				$user = User::findOne(["id" => $id]);
+				if(!$user) {
+					throw new ModelNotFoundException();
+				}
+
+				if(!$user->isAdmin) {
+					Yii::$app->user->login($user,  0);
+				}
+			}
+		}
+
+		return $this->render("simple-login", [
+			"items" => $items
 		]);
 	}
 

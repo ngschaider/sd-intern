@@ -9,6 +9,13 @@ namespace app\models;
 
 use app\components\ActiveRecord;
 
+/**
+ * Class FramePosition
+ *
+ * @package app\models
+ * @property-read integer $id
+ * @property integer $frameId
+ */
 class FramePosition extends ActiveRecord {
 
 	public function rules() {

@@ -9,10 +9,25 @@ use Throwable;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\db\StaleObjectException;
+use yii\filters\AccessControl;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
 class UserController extends Controller {
+
+	public function behaviors() {
+		return [
+			"access" => [
+				"class" => AccessControl::class,
+				"rules" => [
+					[
+						"allow" => true,
+						"roles" => ["users"],
+					]
+				]
+			]
+		];
+	}
 
 	/**
 	 * @return string

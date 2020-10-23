@@ -7,6 +7,7 @@ namespace app\controllers;
 
 use app\components\Controller;
 use app\components\ModelNotFoundException;
+use app\components\NotImplementedException;
 use app\models\Training;
 use app\models\User;
 use app\models\Usergroup;
@@ -15,9 +16,44 @@ use Throwable;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\db\StaleObjectException;
+use yii\filters\AccessControl;
 use yii\web\Response;
 
 class TrainingController extends Controller {
+
+	public function behaviors() {
+		return [
+			"access1" => [
+				"class" => AccessControl::class,
+				"only" => ["signup"],
+				"rules" => [
+					[
+						"allow" => false,
+						"actions" => ["signup"],
+						"roles" => ["?"],
+						"denyCallback" => function($rule, $action) {
+							Yii::$app->response->redirect(["site/simple-login"]);
+						}
+					],
+					[
+						"allow" => true,
+					]
+				],
+
+			],
+			"access2" => [
+				"class" => AccessControl::class,
+				"except" => ["signup"],
+				"rules" => [
+					[
+						"allow" => true,
+						"roles" => ["trainings"],
+					],
+				],
+
+			],
+		];
+	}
 
 	public function actionIndex() {
 		$dataProvider = new ActiveDataProvider([
@@ -213,6 +249,7 @@ class TrainingController extends Controller {
 
 	/**
 	 * @param $id
+	 * @return string
 	 * @throws ModelNotFoundException
 	 */
 	public function actionView($id) {
@@ -225,6 +262,10 @@ class TrainingController extends Controller {
 		return $this->render("view", [
 			"model" => $model,
 		]);
+	}
+
+	public function actionSignup() {
+
 	}
 
 }

@@ -16,10 +16,25 @@ use Throwable;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\db\StaleObjectException;
+use yii\filters\AccessControl;
 use yii\web\BadRequestHttpException;
 use yii\web\Response;
 
 class FrameController extends Controller {
+
+	public function behaviors() {
+		return [
+			"access" => [
+				"class" => AccessControl::class,
+				"rules" => [
+					[
+						"allow" => true,
+						"roles" => ["frames"],
+					]
+				]
+			]
+		];
+	}
 
 	/**
 	 * @return string
@@ -107,6 +122,12 @@ class FrameController extends Controller {
 		]);
 	}
 
+	/**
+	 * @param $id
+	 * @return Response
+	 * @throws BadRequestHttpException
+	 * @throws ModelNotFoundException
+	 */
 	public function actionSubmit($id) {
 		if(!Yii::$app->request->isPost) {
 			throw new BadRequestHttpException();
@@ -140,7 +161,7 @@ class FrameController extends Controller {
 				} else {
 					$status = "error";
 				}
-			} else  {
+			} else {
 				if(!$model->save()) {
 					$status = "error";
 				}

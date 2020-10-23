@@ -15,9 +15,24 @@ use Throwable;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\db\StaleObjectException;
+use yii\filters\AccessControl;
 use yii\web\Response;
 
 class FormationController extends Controller {
+
+	public function behaviors() {
+		return [
+			"access" => [
+				"class" => AccessControl::class,
+				"rules" => [
+					[
+						"allow" => true,
+						"roles" => ["formations"],
+					]
+				]
+			]
+		];
+	}
 
 	/**
 	 * @return string
@@ -49,7 +64,6 @@ class FormationController extends Controller {
 
 		return $this->redirect(["index"]);
 	}
-
 
 
 	/**

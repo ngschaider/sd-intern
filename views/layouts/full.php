@@ -40,15 +40,16 @@ AppAsset::register($this);
 		"options" => ["class" => "navbar-nav ml-auto"],
 		"items" => [
 			["label" => "Home", 'url' => ['/site']],
-			["label" => "Bilder", "url" => ["/formation/list"]],
-			["label" => "Statistiken", "url" => ["/statistic"], "adminOnly" => true],
-			["label" => "Trainings", "url" => ["/training"], "adminOnly" => true],
-			["label" => "Locations", "url" => ["/location"], "adminOnly" => true],
-			["label" => "Admin", "adminOnly" => true, "items" => [
-				["label" => "Benutzer", 'url' => ["/user"]],
-				["label" => "Benutzergruppen", 'url' => ["/usergroup"]],
-				["label" => "Formationen", "url" => ["/formation"]],
-				["label" => "Bilder", "url" => ["/frame"]],
+			["label" => "Trainingsanmeldung", "url" => ["/training/signup"]],
+			["label" => "Bilder", "url" => ["/formation/list"], "permission" => "@"],
+			["label" => "Statistiken", "url" => ["/statistic"], "permission" => "statistics"],
+			["label" => "Trainings", "url" => ["/training"], "permission" => "trainings"],
+			["label" => "Locations", "url" => ["/location"], "permission" => "locations"],
+			["label" => "Admin", "items" => [
+				["label" => "Benutzer", 'url' => ["/user"], "permission" => "users"],
+				["label" => "Benutzergruppen", 'url' => ["/usergroup"], "permission" => "usergroups"],
+				["label" => "Formationen", "url" => ["/formation"], "permission" => "formations"],
+				["label" => "Bilder", "url" => ["/frame"], "permission" => "frames"],
 			]],
 			Yii::$app->user->isGuest ? (
 			["label" => "Login", "url" => ["/site/login"]]

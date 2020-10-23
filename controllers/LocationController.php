@@ -9,6 +9,7 @@ use Throwable;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\db\StaleObjectException;
+use yii\filters\AccessControl;
 use yii\web\Response;
 
 /**
@@ -16,6 +17,20 @@ use yii\web\Response;
  * @author Niklas Gschaider <niklas.gschaider@gschaider-systems.at>
  */
 class LocationController extends Controller {
+
+	public function behaviors() {
+		return [
+			"access" => [
+				"class" => AccessControl::class,
+				"rules" => [
+					[
+						"allow" => true,
+						"roles" => ["locations"],
+					]
+				]
+			]
+		];
+	}
 
 	public function actionIndex() {
 		$dataProvider = new ActiveDataProvider([
