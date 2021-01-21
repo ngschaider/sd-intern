@@ -6,7 +6,7 @@
     <br>
 </p>
 
-S&D Management ist eine Management-Software zur einfachere Verwaltung des Vereins 'Show & Dance Triestingtal'
+S&D Management ist eine Management-Software zur einfacheren Verwaltung des Vereins 'Show & Dance Triestingtal'
 
 
 REQUIREMENTS
