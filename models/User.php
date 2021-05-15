@@ -201,7 +201,6 @@ class User extends ActiveRecord implements IdentityInterface {
 		return $ret;
 	}
 
-
 	/**
 	 * @param Training $training
 	 * @return bool
@@ -213,12 +212,18 @@ class User extends ActiveRecord implements IdentityInterface {
 			return false;
 		}
 
+		// can not signup for a training which the user is already signed up to 
 		if($this->didAttendTraining($training)) {
 			return false;
 		}
 
+
+		
+		// find the last training training
 		/** @var Training $lastTraining */
-		$lastTraining = Training::find()->orderBy(["end" => SORT_DESC])->where(["<", "end", $training->start])->one();
+		$lastTraining = Training::find()->orderBy(["end" => SORT_DESC])->where(["<", "end", $training->start])->andWhere(["locationId" => $training->locationId])->one();
+
+		// if the last training had a maximum and the training was completely filled and the user did not participate they can signup
 		if($lastTraining && count($lastTraining->userTrainings) >= $lastTraining->maxUsers && $lastTraining->maxUsers >= 0) {
 			if(!$this->didAttendTraining($lastTraining)) {
 				return true;

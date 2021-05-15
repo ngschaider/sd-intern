@@ -248,6 +248,31 @@ class TrainingController extends Controller {
 		]);
 	}
 
+		/**
+	 * @param $id
+	 * @param $value
+	 * @return Response
+	 * @throws ModelNotFoundException
+	 */
+	public function action3g($id, $value) {
+		$model = UserTraining::findOne(["id" => $id]);
+		if(!$model) {
+			throw new ModelNotFoundException();
+		}
+
+		$value = $value === "true";
+
+		$model->ggg = $value;
+		$success = $model->save(false);
+
+		return $this->asJson([
+			"id" => $model->id,
+			"key" => "3g",
+			"value" => $model->attended,
+			"success" => $success,
+		]);
+	}
+
 	/**
 	 * @param $id
 	 * @return string

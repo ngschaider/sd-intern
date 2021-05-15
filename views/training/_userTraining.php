@@ -22,6 +22,11 @@ use yii\web\View;
         <input type="text" class="form-control" value="<?= $model->user->username ?>" disabled>
         <div class="input-group-append">
             <div class="input-group-text">
+                <input type="checkbox" class="3g" data-id="<?= $model->id ?>" <?= $model->ggg ? "checked" : "" ?>>&nbsp;3G überprüft?
+            </div>
+        </div>
+        <div class="input-group-append">
+            <div class="input-group-text">
                 <input type="checkbox" class="trainer" data-id="<?= $model->id ?>" <?= $model->isTrainer ? "checked" : "" ?>>&nbsp;Trainer
             </div>
         </div>
@@ -41,14 +46,24 @@ use yii\web\View;
 
 
 <?php ob_start() ?>
+    $(".3g").change(function(e) {
+        const $el = $(this);
+        const id = $el.data("id");
+        const value = $el.prop("checked");
+
+        //console.log(id + "=" + value);
+        $.get("<?= Url::to(["3g"]) ?>?id=" + id + "&value=" + value, function(data, status) {
+            //console.log(data);
+        });
+    });
     $(".attended").change(function(e) {
         const $el = $(this);
         const id = $el.data("id");
         const value = $el.data("value");
 
-        console.log(id + "=" + value);
+        //console.log(id + "=" + value);
         $.get("<?= Url::to(["attended"]) ?>?id=" + id + "&value=" + value, function(data, status) {
-            console.log(data);
+            //console.log(data);
         });
     });
     $(".trainer").change(function(e) {
@@ -56,9 +71,9 @@ use yii\web\View;
         const id = $el.data("id");
         const value = $el.prop("checked");
 
-        console.log(id + "=" + value);
+        //console.log(id + "=" + value);
         $.get("<?= Url::to(["trainer"]) ?>?id=" + id + "&value=" + value, function(data, status) {
-            console.log(data);
+            //console.log(data);
         });
     });
 <?php

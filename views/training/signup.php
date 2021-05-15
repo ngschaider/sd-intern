@@ -32,7 +32,8 @@ foreach($models as $model) {
 		        echo Html::hiddenInput("trainingId", $model->id);
 		        echo Html::submitButton("Anmelden", [
 			        "class" => "btn btn-primary"
-		        ]);
+                ]);
+                echo Html::endForm();
 	        } ?>
         </div>
 
