@@ -217,14 +217,17 @@ class User extends ActiveRecord implements IdentityInterface {
 			return false;
 		}
 
+		// no time limit.
+		// no priority signups
+		return true;
 
 		
 		// find the last training training
 		/** @var Training $lastTraining */
-		$lastTraining = Training::find()->orderBy(["end" => SORT_DESC])->where(["<", "end", $training->start])->andWhere(["locationId" => $training->locationId])->one();
+		//$lastTraining = Training::find()->orderBy(["end" => SORT_DESC])->where(["<", "end", $training->start])->andWhere(["locationId" => $training->locationId])->one();
 
 		// if the last training had a maximum and the training was completely filled and the user did not participate they can signup
-		if($lastTraining && count($lastTraining->userTrainings) >= $lastTraining->maxUsers && $lastTraining->maxUsers >= 0) {
+		/*if($lastTraining && count($lastTraining->userTrainings) >= $lastTraining->maxUsers && $lastTraining->maxUsers >= 0) {
 			if(!$this->didAttendTraining($lastTraining)) {
 				return true;
 			};
@@ -237,7 +240,26 @@ class User extends ActiveRecord implements IdentityInterface {
 		$compare = new DateTime();
 		$compare->add(new DateInterval("PT48H"));
 
-		return $compare->diff($training->startObj)->invert;
+		return $compare->diff($training->startObj)->invert;*/
+	}
+
+	/**
+	 * @param Training $training
+	 * @return bool
+	 */
+	public function canSignoff($training) {
+		$now = new DateTime();
+		if($training->startObj < $now) {
+			// can not signoff for a training in the past.
+			return false;
+		}
+
+		// can not signoff for a training which the user is not signed up to 
+		if(!$this->didAttendTraining($training)) {
+			return false;
+		}
+		
+		return true;
 	}
 
 }

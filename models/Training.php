@@ -103,7 +103,8 @@ class Training extends ActiveRecord {
 	public function addUser($user, $attended = false) {
 		foreach($this->userTrainings as $userTraining) {
 			if($userTraining->userId == $user->id) {
-				return false;
+				$userTraining->attended = $attended;
+				return $userTraining->save();
 			}
 		}
 

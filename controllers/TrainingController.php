@@ -298,6 +298,7 @@ class TrainingController extends Controller {
 	public function actionSignup() {
 		if(Yii::$app->request->isPost) {
 			$trainingId = Yii::$app->request->post("trainingId");
+			$status = Yii::$app->request->post("status");
 			if(!$trainingId) {
 				throw new InvalidArgumentException();
 			}
@@ -307,8 +308,10 @@ class TrainingController extends Controller {
 				throw new ModelNotFoundException();
 			}
 
-			if(Yii::$app->user->identity->canSignup($training)) {
+			if($status === "true" && Yii::$app->user->identity->canSignup($training)) {
 				$training->addUser(Yii::$app->user, true);
+			} else if($status === "false" && Yii::$app->user->identity->canSignoff($training)) {
+				$training->addUser(Yii::$app->user, false);
 			}
 		}
 

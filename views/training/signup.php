@@ -30,8 +30,17 @@ foreach($models as $model) {
 	        <?php if(Yii::$app->user->identity->canSignup($model)) {
 		        echo Html::beginForm();
 		        echo Html::hiddenInput("trainingId", $model->id);
+                echo Html::hiddenInput("status", "true");
 		        echo Html::submitButton("Anmelden", [
 			        "class" => "btn btn-primary"
+                ]);
+                echo Html::endForm();
+	        } else if(Yii::$app->user->identity->canSignoff($model)) {
+		        echo Html::beginForm();
+		        echo Html::hiddenInput("trainingId", $model->id);
+                echo Html::hiddenInput("status", "false");
+		        echo Html::submitButton("Abmelden", [
+			        "class" => "btn btn-danger"
                 ]);
                 echo Html::endForm();
 	        } ?>
